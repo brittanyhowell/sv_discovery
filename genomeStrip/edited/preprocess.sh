@@ -42,6 +42,7 @@ java -cp ${SV_CLASSPATH} -Xmx8g \
     -jobNative "-M 10000" \
     -jobLogDir ${logDir} \
     -R ${referenceFile} \
+    -ploidyMapFile /nfs/users/nfs_k/kw8/INTERVAL/WGS/data/ploidy_map_GRCh38.txt \
     -md ${metaDataDir} \
     -I ${bamFileList} \
     -bamFilesAreDisjoint true \
