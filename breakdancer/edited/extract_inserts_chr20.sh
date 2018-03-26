@@ -4,9 +4,9 @@
 #echo 'bash ~/projects/HGDP/scripts/extract_inserts_chr20.sh ${LSB_JOBINDEX}' | bsub -J "bamArray[1-176]" -o /lustre/scratch114/projects/hgdp_wgs/sv/log_files/config/extract_inserts_chr20_sample%I.out
 
 
-# bsub -J "bamArray[1-3]" -o /nfs/team151/bh10/scripts/breakdancer_bh10/output/extract_inserts_chr20_sample%I-%J.out -e /nfs/team151/bh10/scripts/breakdancer_bh10/output/extract_inserts_chr20_sample%I-%J.err /nfs/team151/bh10/scripts/breakdancer_bh10/extract_inserts_chr20.sh
+# bsub -J "bamArray[1-4760]" -o /nfs/team151/bh10/scripts/breakdancer_bh10/output/extract_inserts_chr20_sample%I-%J.out -e /nfs/team151/bh10/scripts/breakdancer_bh10/output/extract_inserts_chr20_sample%I-%J.err /nfs/team151/bh10/scripts/breakdancer_bh10/extract_inserts_chr20.sh
 
-# bsub -q normal -J "bamArray[1-2]" -o /nfs/team151/bh10/scripts/breakdancer_bh10/output/test-%I-%J.out -e /nfs/team151/bh10/scripts/breakdancer_bh10/output/test-%I-%J.err /nfs/team151/bh10/scripts/breakdancer_bh10/test.sh
+# bsub -q normal -J "bamArray[1-2]" -o /nfs/team151/bh10/scripts/breakdancer_bh10/output/-%I-%J.out -e /nfs/team151/bh10/scripts/breakdancer_bh10/output/test-%I-%J.err /nfs/team151/bh10/scripts/breakdancer_bh10/test.sh
 
 ### SAM/BAM output ###
 
@@ -35,18 +35,17 @@
 
 ## Get a list of the file names with file paths
 # 
-fbamList=/nfs/team151/bh10/scripts/genomestrip_bh10/bamMiniList.list 
+fbamList=/nfs/team151/bh10/scripts/genomestrip_bh10/bamList.list 
 bamList=($(<"${fbamList}"))
 bamLine="${bamList[$((LSB_JOBINDEX-1))]}"
 
 
 ## Generate outfile name
 # Input file is list of samples with no filepaths 
-bam="${bamFile[$((LSB_JOBINDEX-1))]}" 
+
 fbamFile=/nfs/team151/bh10/scripts/genomestrip_bh10/bamFileList.list
 bamFile=($(<"${fbamFile}"))
-
-
+bam="${bamFile[$((LSB_JOBINDEX-1))]}" 
 
 echo "bamLine: ${bamLine}"
 echo "bam: "${bam}
