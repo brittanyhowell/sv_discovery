@@ -16,10 +16,12 @@ echo $(date +"[%b %d %H:%M:%S] Extracting Genome STRiP reference bundle")
 referenceFile=/lustre/scratch115/resources/ref/Homo_sapiens/HS38DH/hs38DH.fa ###path to reference file copy from "/software/page/svtoolkit/1000G_phase3/human_g1k_hs37d5.fasta"
 echo "Reference FASTA: "$referenceFile
 
+
 wDir=/lustre/scratch115/projects/interval_wgs/analysis/sv/genomestrip
+ploidyFile=/nfs/team151/bh10/scripts/genomestrip_bh10/human_ploidy_map_GRCh38.txt 
 tmpDir=${wDir}/tmp
 metaDataDir=${wDir}/metadata
-logDir=${metaDataDir}/logs        
+logDir=${metaDataDir}/logs
 
 mkdir -p ${tmpDir}
 mkdir -p ${metaDataDir}
@@ -42,7 +44,7 @@ java -cp ${SV_CLASSPATH} -Xmx8g \
     -jobNative "-M 10000" \
     -jobLogDir ${logDir} \
     -R ${referenceFile} \
-    -ploidyMapFile /nfs/users/nfs_k/kw8/INTERVAL/WGS/data/ploidy_map_GRCh38.txt \
+    -ploidyMapFile ${ploidyFile} \
     -md ${metaDataDir} \
     -I ${bamFileList} \
     -bamFilesAreDisjoint true \
