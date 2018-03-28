@@ -1,12 +1,12 @@
 #!/bin/bash
 
 
-# bsub -q normal -o /lustre/scratch115/projects/interval_wgs/testFile/changeCRAMHeader.out -e /lustre/scratch115/projects/interval_wgs/testFile/changeCRAMHeader.err -R"select[mem>2000] rusage[mem=2000]" -M2000 "/lustre/scratch115/projects/interval_wgs/testFile/changeCRAMhead.sh"
+# bsub -q normal -o /nfs/team151/bh10/scripts/genomestrip_bh10/output/changeCRAMHeader.out -e /nfs/team151/bh10/scripts/genomestrip_bh10/output/changeCRAMHeader.err -R"select[mem>2000] rusage[mem=2000]" -M2000 "/nfs/team151/bh10/scripts/genomestrip_bh10/changeCRAMhead.sh"
 
 
 
-cramDIR=/lustre/scratch115/projects/interval_wgs/testFile/testBam
-wDIR=/lustre/scratch115/projects/interval_wgs/testFile/headers
+cramDIR=/lustre/scratch115/projects/interval_wgs/crams/
+wDIR=/lustre/scratch115/projects/interval_wgs/crams/headers/
 
 
 cd $cramDIR
