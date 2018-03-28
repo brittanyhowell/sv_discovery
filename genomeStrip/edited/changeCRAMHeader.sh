@@ -5,7 +5,7 @@
 
 
 
-cramDIR=/lustre/scratch115/projects/interval_wgs/testFile/testBAM
+cramDIR=/lustre/scratch115/projects/interval_wgs/testFile/testBam
 wDIR=/lustre/scratch115/projects/interval_wgs/testFile/headers
 
 
@@ -25,5 +25,3 @@ for CRAM in *.cram  ; do
 done
 
 echo "Complete"
-
-
