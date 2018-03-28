@@ -1,13 +1,12 @@
 #!/bin/bash
 
 
-# bsub -q normal -o /lustre/scratch115/projects/interval_wgs/testFile/changeHeader.out -e /lustre/scratch115/projects/interval_wgs/testFile/changeHeader.err -R"select[mem>2000] rusage[mem=2000]" -M2000 "/lustre/scratch115/projects/interval_wgs/testFile/testReHeader.sh"
+# bsub -q normal -o /nfs/team151/bh10/scripts/genomestrip_bh10/output/changeBAMHeader.out -e /nfs/team151/bh10/scripts/genomestrip_bh10/output/changeBAMHeader.err -R"select[mem>2000] rusage[mem=2000]" -M2000 "/nfs/team151/bh10/scripts/genomestrip_bh10/reHeader.sh"
 
 
 
-bamDIR=/lustre/scratch115/projects/interval_wgs/testFile/testBam
-wDIR=/lustre/scratch115/projects/interval_wgs/testFile/headers
-
+bamDIR=/lustre/scratch115/projects/interval_wgs/chr20bams/
+oDIR=/lustre/scratch115/projects/interval_wgs/chr20bams_newHeader/
 
 cd $bamDIR
 
@@ -17,15 +16,10 @@ for BAM in *.bam  ; do
 
 	echo "editing: "$filename
 
-	outFile=${wDIR}/header_${BAM}
+	outFile=${oDIR}/headers/header_${filename}.sam
 
-	# samtools view -H ${BAM} | wc -l 
 	samtools view -H $BAM | sed 's/\*/_/g' > ${outFile}
-	samtools reheader ${outFile} $BAM > n_${BAM}
-	rm ${BAM}
-	mv n_${BAM} ${filename}.bam
-
-
+	samtools reheader ${outFile} $BAM > ${oDIR}/${BAM}
 
 done
 
