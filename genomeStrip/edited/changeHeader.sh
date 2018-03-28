@@ -23,7 +23,7 @@ for BAM in *.bam  ; do
 	samtools view -H $BAM | sed 's/\*/_/g' > ${outFile}
 	samtools reheader ${outFile} $BAM > n_${BAM}
 	rm ${BAM}
-	mv ${n_BAM} ${BAM}
+	mv n_${BAM} ${filename}.bam
 
 
 
