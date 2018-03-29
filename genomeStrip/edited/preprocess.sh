@@ -13,11 +13,11 @@ export SV_DIR=/nfs/team151/software/svtoolkit  ### path to svtoolkit eg /softwar
 SV_CLASSPATH="${SV_DIR}/lib/SVToolkit.jar:${SV_DIR}/lib/gatk/GenomeAnalysisTK.jar:${SV_DIR}/lib/gatk/Queue.jar"
 
 echo $(date +"[%b %d %H:%M:%S] Extracting Genome STRiP reference bundle")
-referenceFile=/lustre/scratch115/resources/ref/Homo_sapiens/HS38DH/hs38DH.fa ###path to reference file copy from "/software/page/svtoolkit/1000G_phase3/human_g1k_hs37d5.fasta"
+referenceFile=/lustre/scratch115/projects/interval_wgs/analysis/sv/genomes/hs38DH.fa ###path to reference file copy from "/software/page/svtoolkit/1000G_phase3/human_g1k_hs37d5.fasta"
 echo "Reference FASTA: "$referenceFile
 
 
-wDir=/lustre/scratch115/projects/interval_wgs/analysis/sv/genomestrip
+wDir=/lustre/scratch115/projects/interval_wgs/analysis/sv/genomestrip/
 ploidyFile=/nfs/team151/bh10/scripts/genomestrip_bh10/human_ploidy_map_GRCh38.txt 
 tmpDir=${wDir}/tmp
 metaDataDir=${wDir}/metadata
