@@ -35,7 +35,7 @@
 
 ## Get a list of the file names with file paths
 # 
-fbamList=/nfs/team151/bh10/scripts/genomestrip_bh10/bamList.list 
+fbamList=/lustre/scratch115/projects/interval_wgs/crams/listCramFiles.list
 bamList=($(<"${fbamList}"))
 bamLine="${bamList[$((LSB_JOBINDEX-1))]}"
 
@@ -43,7 +43,7 @@ bamLine="${bamList[$((LSB_JOBINDEX-1))]}"
 ## Generate outfile name
 # Input file is list of samples with no filepaths 
 
-fbamFile=/nfs/team151/bh10/scripts/genomestrip_bh10/bamFileList.list
+fbamFile=/lustre/scratch115/projects/interval_wgs/crams/listCrams.list
 bamFile=($(<"${fbamFile}"))
 bam="${bamFile[$((LSB_JOBINDEX-1))]}" 
 
@@ -54,10 +54,12 @@ filename=${bam%.bam}
 
 echo "filename: "$filename
 
-outfile=/lustre/scratch115/projects/interval_wgs/analysis/sv/inserts/${filename}.gz
+outfile=/lustre/scratch115/projects/interval_wgs/analysis/sv/inserts/crams/${filename}
 echo "outfile: "$outfile
 
-     samtools view $bamLine chr20:10000000-11000000 | awk -F '\t' '$5>20 && $9>=0' | cut -f9 | gzip -f > ${outfile}
+     samtools view $bamLine chr20:10000000-11000000 | awk -F '\t' '$5>20 && $9>=0' | cut -f9 | gzip -f > ${outfile}_20.gz
+
+
 
 
 
