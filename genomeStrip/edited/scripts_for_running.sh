@@ -1,7 +1,7 @@
-bsub -q long -o /nfs/team151/bh10/scripts/genomestrip_bh10/output/preprocess.CRAM.testTwo.%J.out -e /nfs/team151/bh10/scripts/genomestrip_bh10/output/preprocess.CRAM.testTwo.%J.err -R"select[mem>20000] rusage[mem=20000]" -M20000 "/nfs/team151/bh10/scripts/genomestrip_bh10/preprocess.sh INTERVAL_WG /nfs/team151/bh10/scripts/genomestrip_bh10/cramTwoList.list"
+bsub -q long -o /nfs/team151/bh10/scripts/genomestrip_bh10/output/preprocess.CRAM.%J.out -e /nfs/team151/bh10/scripts/genomestrip_bh10/output/preprocess.CRAM.%J.err -R"select[mem>20000] rusage[mem=20000]" -M20000 "/nfs/team151/bh10/scripts/genomestrip_bh10/preprocess.sh INTERVAL_WG /nfs/team151/bh10/scripts/genomestrip_bh10/cramList.list"
  
  
-bsub -q long -o /lustre/scratch115/realdata/mdt3/projects/pagedata/data_freezes/2017-06-24_WGS/genomestrip/farmout/disc.out.%J -e /lustre/scratch115/realdata/mdt3/projects/pagedata/data_freezes/2017-06-24_WGS/genomestrip/farmout/disc.err.%J -R"select[mem>10000] rusage[mem=10000]" -M10000 "/lustre/scratch115/realdata/mdt3/projects/pagedata/data_freezes/2017-06-24_WGS/genomestrip/discovery.sh PAGE_WGS /lustre/scratch115/realdata/mdt3/projects/pagedata/data_freezes/2017-06-24_WGS/genomestrip/input_bam_files.list"
+bsub -q long -o /nfs/team151/bh10/scripts/genomestrip_bh10/output/disc.twoTest.out.%J -e /nfs/team151/bh10/scripts/genomestrip_bh10/output/disc.twoTest.err.%J -R"select[mem>10000] rusage[mem=10000]" -M10000 "/nfs/team151/bh10/scripts/genomestrip_bh10/discovery.sh INTERVAL_WG /nfs/team151/bh10/scripts/genomestrip_bh10/cramTwoList.list"
  
 took about 7 hours, needed 1406M mem
  
