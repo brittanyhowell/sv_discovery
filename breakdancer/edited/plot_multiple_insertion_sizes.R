@@ -1,13 +1,9 @@
-setwd("~/Documents/Rotation3/scripts/breakdancer/testInserts/")
-
-
+# bsub -o /nfs/team151/bh10/scripts/breakdancer_bh10/output/get_insertion_sizes-%J.out -e /nfs/team151/bh10/scripts/breakdancer_bh10/output/get_insertion_sizes-%J.err -R"select[mem>20000] rusage[mem=20000]" -M20000  R CMD BATCH /nfs/team151/bh10/scripts/breakdancer_bh10/multi_density.R
 
 d <- dir("/lustre/scratch115/projects/interval_wgs/analysis/sv/inserts/crams/files", full.names=TRUE) # Lists files in the DIR
 fn <- dir("/lustre/scratch115/projects/interval_wgs/analysis/sv/inserts/crams/files")
 
-
-
-## MAKE A DF M8
+## Assemble a df from all samples
 df.inserts <- data.frame()
 
 for (i in 1:length(d))  {
@@ -17,15 +13,16 @@ for (i in 1:length(d))  {
   df.inserts <- rbind(df.inserts, df.inserts.load)
 }  
 
-
+# Plot all samples on the sample plot
 pdf("insert_size_distribution_test.pdf", width=10, height=8, pointsize=12, onefile=TRUE)
 ggplot(df.inserts, aes(x=insLength, fill=sample)) +
   geom_density(alpha=0.25) + 
-  scale_x_continuous(limits = c(0, 1000))
+  scale_x_continuous(limits = c(0, 1000)) + 
+  theme_bw()
 dev.off()
 
 
-
+# She's broken:
 # pdf("insert_size_distribution_test_boxplot.pdf", width=10, height=10, pointsize=12, onefile=TRUE)
 # par(mfrow=c(3,3), mai=c(0.6,0.6,0.5,0.1))
 # 
