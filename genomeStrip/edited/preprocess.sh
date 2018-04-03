@@ -39,7 +39,7 @@ java -cp ${SV_CLASSPATH} -Xmx8g \
     -cp ${SV_CLASSPATH} \
     -jobRunner Drmaa \
     -gatkJobRunner Drmaa \
-    -jobNative "-q long" \
+    -jobNative "-q normal" \
     -jobNative "-R \"select[mem>10000] rusage[mem=10000]\"" \
     -jobNative "-M 10000" \
     -jobLogDir ${logDir} \
