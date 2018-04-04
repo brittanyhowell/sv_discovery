@@ -1,4 +1,4 @@
-# bsub -o /nfs/team151/bh10/scripts/bh10_general/output/get_insertion_sizes-%J.out -e /nfs/team151/bh10/scripts/bh10_general/output/get_insertion_sizes-%J.err -R"select[mem>1000] rusage[mem=1000]" -M1000  R CMD BATCH /nfs/team151/bh10/scripts/bh10_general/multi_density.R
+# bsub -o /nfs/team151/bh10/scripts/bh10_general/output/get_insertion_sizes-%J.out -e /nfs/team151/bh10/scripts/bh10_general/output/get_insertion_sizes-%J.err -R"select[mem>20000] rusage[mem=20000]" -M20000  R CMD BATCH /nfs/team151/bh10/scripts/bh10_general/multi_density.R
 .libPaths( c( .libPaths(), "/nfs/team151/software/Rlibs/") )
 
 
@@ -9,21 +9,50 @@ fn <- dir("/lustre/scratch115/projects/interval_wgs/analysis/sv/inserts/crams/fi
 
 ## Assemble a df from all samples
 df.inserts <- data.frame()
+plot.num <- 1
 
 for (i in 1:length(d))  {
   print(i)
   df.inserts.load <- data.frame(c(scan(d[i])), fn[i])
   colnames(df.inserts.load) <- c("insLength", "sample")
   df.inserts <- rbind(df.inserts, df.inserts.load)
+  
+  if(i %% 10 == 0 | i == length(d)){
+    # Name the PDF
+    name <- paste("/nfs/team151/bh10/scripts/bh10_general/insert_size_distribution", plot.num, "pdf", sep = ".")
+    # generate a plot from those 10
+    pdf(name, width=10, height=8, pointsize=12, onefile=TRUE)
+    ggplot(df.inserts, aes(x=insLength, fill=sample)) +
+      geom_density(alpha=0.20) + 
+      scale_x_continuous(limits = c(0, 1000)) + 
+      theme_bw()
+    dev.off()
+    
+    #reset the df
+    df.inserts <- data.frame()
+    plot.num <- plot.num + 1
+  }
+  
 }  
 
-# Plot all samples on the sample plot
-pdf("/nfs/team151/bh10/scripts/breakdancer_bh10/insert_size_distribution_test.pdf", width=10, height=8, pointsize=12, onefile=TRUE)
-ggplot(df.inserts, aes(x=insLength, fill=sample)) +
-  geom_density(alpha=0.10) + 
-  scale_x_continuous(limits = c(0, 1000)) + 
-  theme_bw()
-dev.off()
+
+# ## If statement testing
+# 
+# test <- c("4", "5", "6", "5", "6", "5", "6", "5", "6", "7")
+# for (j in 1:length(test)){
+#   if(j %% 3 == 0 | j == length(test)){
+#     print(c(j, "div by 3 or 10"))}
+#   print(j)
+# 
+# }
+
+# # Plot all samples on the sample plot
+# pdf("/nfs/team151/bh10/scripts/breakdancer_bh10/insert_size_distribution_test.pdf", width=10, height=8, pointsize=12, onefile=TRUE)
+# ggplot(df.inserts, aes(x=insLength, fill=sample)) +
+#   geom_density(alpha=0.10) + 
+#   scale_x_continuous(limits = c(0, 1000)) + 
+#   theme_bw()
+# dev.off()
 
 
 # She's broken:
