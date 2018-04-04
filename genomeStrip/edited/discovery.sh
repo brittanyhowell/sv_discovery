@@ -1,7 +1,7 @@
 #!/bin/bash
 
 cohortId=$1
-bamFileList=$2
+bamFileList=/nfs/team151/bh10/scripts/genomestrip_bh10/cramTwoList.list
 
 export PATH=/software/hgi/pkglocal/samtools-1.3.1/bin:$PATH
 export PATH=/software/R-3.0.0/bin:$PATH
