@@ -22,32 +22,35 @@ for (i in 1:length(d))  {
   
    if(i %% 5 == 0 | i == length(d)){
     # Name the PDF
-    name <- paste("/nfs/team151/bh10/scripts/bh10_general/plots/insert_size_dist_dens", plot.num, "pdf", sep = ".")
+    name <- paste("/nfs/team151/bh10/scripts/bh10_general/plots/insert_size_dist_dens", plot.num, sep = "_")
     # name <- paste("/Users/bh10/Documents/Rotation3/data/inserts/test_insert_dist", plot.num, sep = "_")
     name <- paste(name, "pdf", sep = ".")
     # generate a plot from those 10
-    pdf(name, width=10, height=8)
     
+    pdf(name, width=10, height=10, pointsize=12, onefile=TRUE)
+    par(mfrow=c(3,3), mai=c(0.6,0.6,0.5,0.1))
     print(ggplot(df.inserts, aes(x=insLength, fill=sample)) +
       geom_density(alpha=0.20) + 
       scale_x_continuous(limits = c(0, 1000)) + 
       theme_bw())
     
-    dev.off()
+    # dev.off()
     
     boxname <- paste("/nfs/team151/bh10/scripts/bh10_general/plots/insert_size_dist_box", plot.num, sep = "_")
     boxname <- paste(boxname, "pdf", sep = ".")
     # generate a boxplot from those 10
-    pdf(boxname, width=10, height=8)
+    # pdf(name, width=10, height=10, pointsize=12, onefile=TRUE)
+    # par(mfrow=c(3,3), mai=c(0.6,0.6,0.5,0.1))
     print(ggplot(df.inserts,aes(x=sample, y=insLength, fill=sample)) +
       geom_boxplot() +
       scale_y_continuous(limits = c(0, 1000)))
-    dev.off()
+    # dev.off()
  
     boxname.unlimited <- paste("/nfs/team151/bh10/scripts/bh10_general/plots/insert_size_dist_box_limitless", plot.num, sep = "_")
     boxname.unlimited <- paste(boxname.unlimited, "pdf", sep = ".")
     # generate a boxplot from those 10
-    pdf(boxname.unlimited, width=10, height=8)
+    # pdf(name, width=10, height=10, pointsize=12, onefile=TRUE)
+    # par(mfrow=c(3,3), mai=c(0.6,0.6,0.5,0.1))
     print(ggplot(df.inserts,aes(x=sample, y=insLength, fill=sample)) +
       geom_boxplot() )
     dev.off()   
