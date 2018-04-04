@@ -1,9 +1,11 @@
-# bsub -o /nfs/team151/bh10/scripts/bh10_general/output/get_insertion_sizes-%J.out -e /nfs/team151/bh10/scripts/bh10_general/output/get_insertion_sizes-%J.err -R"select[mem>20000] rusage[mem=20000]" -M20000  R CMD BATCH /nfs/team151/bh10/scripts/bh10_general/multi_density.R
+# bsub -o /nfs/team151/bh10/scripts/bh10_general/output/get_insertion_sizes-%J.out -e /nfs/team151/bh10/scripts/bh10_general/output/get_insertion_sizes-%J.err -R"select[mem>1000] rusage[mem=1000]" -M1000  R CMD BATCH /nfs/team151/bh10/scripts/bh10_general/multi_density.R
+.libPaths( c( .libPaths(), "/nfs/team151/software/Rlibs/") )
+
 
 library("ggplot2", "/nfs/team151/software/Rlibs/")
 
-d <- dir("/lustre/scratch115/projects/interval_wgs/analysis/sv/inserts/crams/files/test", full.names=TRUE) # Lists files in the DIR
-fn <- dir("/lustre/scratch115/projects/interval_wgs/analysis/sv/inserts/crams/files/test")
+d <- dir("/lustre/scratch115/projects/interval_wgs/analysis/sv/inserts/crams/files", full.names=TRUE) # Lists files in the DIR
+fn <- dir("/lustre/scratch115/projects/interval_wgs/analysis/sv/inserts/crams/files")
 
 ## Assemble a df from all samples
 df.inserts <- data.frame()
@@ -18,7 +20,7 @@ for (i in 1:length(d))  {
 # Plot all samples on the sample plot
 pdf("/nfs/team151/bh10/scripts/breakdancer_bh10/insert_size_distribution_test.pdf", width=10, height=8, pointsize=12, onefile=TRUE)
 ggplot(df.inserts, aes(x=insLength, fill=sample)) +
-  geom_density(alpha=0.25) + 
+  geom_density(alpha=0.10) + 
   scale_x_continuous(limits = c(0, 1000)) + 
   theme_bw()
 dev.off()
