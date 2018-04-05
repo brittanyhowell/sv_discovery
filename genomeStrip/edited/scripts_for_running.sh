@@ -1,7 +1,7 @@
-bsub -q long -o /nfs/team151/bh10/scripts/genomestrip_bh10/output/preprocess.CRAM.%J.out -e /nfs/team151/bh10/scripts/genomestrip_bh10/output/preprocess.CRAM.%J.err -R"select[mem>20000] rusage[mem=20000]" -M20000 "/nfs/team151/bh10/scripts/genomestrip_bh10/preprocess.sh INTERVAL_WG /nfs/team151/bh10/scripts/genomestrip_bh10/cramList.list"
+bsub -q long -o /nfs/team151/bh10/scripts/genomestrip_bh10/output/preprocess.CRAM.%J.out -e /nfs/team151/bh10/scripts/genomestrip_bh10/output/preprocess.CRAM.%J.err -R"select[mem>20000] rusage[mem=20000]" -M20000 "/nfs/team151/bh10/scripts/genomestrip_bh10/preprocess.sh INTERVAL_WG_pre /nfs/team151/bh10/scripts/genomestrip_bh10/cramList.list"
  
  
-bsub -q long -o /nfs/team151/bh10/scripts/genomestrip_bh10/output/disc.twoTest.out.%J -e /nfs/team151/bh10/scripts/genomestrip_bh10/output/disc.twoTest.err.%J -R"select[mem>10000] rusage[mem=10000]" -M10000 "/nfs/team151/bh10/scripts/genomestrip_bh10/discovery.sh INTERVAL_WG /nfs/team151/bh10/scripts/genomestrip_bh10/cramTwoList.list"
+bsub -q long -o /nfs/team151/bh10/scripts/genomestrip_bh10/output/n_disc.twoTest.%J.out -e /nfs/team151/bh10/scripts/genomestrip_bh10/output/n_disc.twoTest.%J.err -R"select[mem>10000] rusage[mem=10000]" -M10000 "/nfs/team151/bh10/scripts/genomestrip_bh10/discovery.sh INTERVAL_WG_disc_two"
  
 took about 7 hours, needed 1406M mem
  
