@@ -1,7 +1,9 @@
 #!/bin/bash
 
 cohortId=$1
+echo "cohort ID: " $cohortId
 bamFileList=/nfs/team151/bh10/scripts/genomestrip_bh10/cramTwoList.list
+echo "file list: "$bamFileList
 
 export PATH=/software/hgi/pkglocal/samtools-1.3.1/bin:$PATH
 export PATH=/software/R-3.0.0/bin:$PATH
@@ -23,7 +25,8 @@ runDir=${wDir}/del_output
 mkdir -p ${runDir}
 mkdir -p ${runDir}/logs || exit 1
 
-metaData=/lustre/scratch115/projects/interval_wgs/analysis/sv/genomestrip/preprocess/metadata #### path to your metadata dir 
+metaData=/lustre/scratch115/projects/interval_wgs/analysis/sv/genomestrip/preprocess/testTwo/metadata #### path to your metadata dir 
+echo "metadata dir: "$metaData
 
 filePrefix=gs_dels
 
