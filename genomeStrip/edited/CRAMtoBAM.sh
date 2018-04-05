@@ -3,7 +3,8 @@
 # Convert CRAM files in a DIR to BAMs. 
 
 ref=/lustre/scratch115/resources/ref/Homo_sapiens/HS38DH/hs38DH.fa
-
+wDIR=/lustre/scratch115/projects/interval_wgs/crams/
+oDIR=/lustre/scratch115/projects/interval_wgs/WGbams/
 
 
 
@@ -27,6 +28,7 @@ oFile=${oDIR}/${filename}.bam
 samtools view ${cramLine} -T ${ref} -b > ${oFile}
 
 echo "complete"
+
 
 
 
