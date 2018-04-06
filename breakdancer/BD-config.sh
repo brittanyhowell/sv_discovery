@@ -23,4 +23,4 @@ oFile=${oDIR}/${filename}.config
     ## Run BD
     echo "perl ${swDIR}/bam2cfg.pl -c 4 -q 20 -n 10000 {bamLine} > ${oFile}"
 
-    perl ${swDIR}/bam2cfg.pl -c 4 -q 20 -n 10000 ${bamLine} > ${oFile}
+    perl ${swDIR}/bam2cfg.pl -c 4 -q 20 -n 10000 {bamLine} > ${oFile}
