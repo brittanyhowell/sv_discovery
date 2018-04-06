@@ -47,8 +47,8 @@ java -cp ${SV_CLASSPATH} -Xmx2g \
     -jobRunner Drmaa \
     -gatkJobRunner Drmaa \
     -jobNative "-q normal" \
-    -jobNative "-R \"select[mem>10000] rusage[mem=10000]\"" \
-    -jobNative "-M 10000" \
+    -jobNative "-R \"select[mem>20000] rusage[mem=20000]\"" \
+    -jobNative "-M 20000" \
     -runDirectory ${runDir} \
     -jobLogDir ${runDir}/logs \
     -windowSize 5000000 \
