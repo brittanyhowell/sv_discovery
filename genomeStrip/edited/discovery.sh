@@ -18,22 +18,24 @@ echo $(date +"[%b %d %H:%M:%S] Extracting Genome STRiP reference bundle")
 referenceFile=/lustre/scratch115/projects/interval_wgs/analysis/sv/genomes/hs38DH.fa ######path to reference fuile, copy from "/software/page/svtoolkit/1000G_phase3/human_g1k_hs37d5.fasta"
 echo "Reference FASTA: "$referenceFile
 
-wDir=/lustre/scratch115/projects/interval_wgs/analysis/sv/genomestrip/discovery ### path to your working dir
+wDir=/lustre/scratch115/projects/interval_wgs/analysis/sv/genomestrip/discovery/chr20 ### path to your working dir
 SV_TMPDIR=${wDir}/tmp
 mkdir -p ${SV_TMPDIR}
 runDir=${wDir}/del_output
 mkdir -p ${runDir}
 mkdir -p ${runDir}/logs || exit 1
 
-metaData=/lustre/scratch115/projects/interval_wgs/analysis/sv/genomestrip/preprocess/testTwo/metadata #### path to your metadata dir 
+metaData=/lustre/scratch115/projects/interval_wgs/analysis/sv/genomestrip/preprocess_chr20 #### path to your metadata dir 
 echo "metadata dir: "$metaData
 
 filePrefix=gs_dels
 
 echo "Running Deletion discovery pipeline..."
 
+
+
 # Run discovery
-java -cp ${SV_CLASSPATH} -Xmx2g \
+java -cp ${SV_CLASSPATH} -Xmx5g \
     org.broadinstitute.gatk.queue.QCommandLine \
     -S ${SV_DIR}/qscript/SVDiscovery.q \
     -S ${SV_DIR}/qscript/SVQScript.q \

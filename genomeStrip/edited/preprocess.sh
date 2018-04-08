@@ -17,7 +17,7 @@ referenceFile=/lustre/scratch115/projects/interval_wgs/analysis/sv/genomes/hs38D
 echo "Reference FASTA: "$referenceFile
 
 
-wDir=/lustre/scratch115/projects/interval_wgs/analysis/sv/genomestrip/preprocess
+wDir=/lustre/scratch115/projects/interval_wgs/analysis/sv/genomestrip/preprocess_chr20
 ploidyFile=/nfs/team151/bh10/scripts/genomestrip_bh10/human_ploidy_map_GRCh38.txt 
 tmpDir=${wDir}/tmp
 metaDataDir=${wDir}/metadata
