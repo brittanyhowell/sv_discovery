@@ -13,7 +13,8 @@ export SV_DIR=/nfs/team151/software/svtoolkit  ### path to svtoolkit eg /softwar
 SV_CLASSPATH="${SV_DIR}/lib/SVToolkit.jar:${SV_DIR}/lib/gatk/GenomeAnalysisTK.jar:${SV_DIR}/lib/gatk/Queue.jar"
 
 echo $(date +"[%b %d %H:%M:%S] Extracting Genome STRiP reference bundle")
-referenceFile=/lustre/scratch115/realdata/mdt1/projects/interval_wgs/analysis/gatk/Homo_sapiens_assembly38/Homo_sapiens_assembly38.fasta ###path to reference file copy from "/software/page/svtoolkit/1000G_phase3/human_g1k_hs37d5.fasta"
+referenceFile=/lustre/scratch115/projects/interval_wgs/analysis/sv/genomes/hs38DH.fa ###path to reference file copy from "/software/page/svtoolkit/1000G_phase3/human_g1k_hs37d5.fasta"
+# referenceFile=/lustre/scratch115/realdata/mdt1/projects/interval_wgs/analysis/gatk/Homo_sapiens_assembly38/Homo_sapiens_assembly38.fasta ###path to reference file copy from "/software/page/svtoolkit/1000G_phase3/human_g1k_hs37d5.fasta"
 echo "Reference FASTA: "$referenceFile
 
 
