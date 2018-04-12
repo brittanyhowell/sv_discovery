@@ -18,7 +18,7 @@ referenceFile=/lustre/scratch115/projects/interval_wgs/analysis/sv/genomes/hs38D
 echo "Reference FASTA: "$referenceFile
 
 
-wDir=/lustre/scratch115/projects/interval_wgs/analysis/sv/genomestrip/preprocess_test2_chr20
+wDir=/lustre/scratch115/projects/interval_wgs/analysis/sv/genomestrip/preprocess_newHead
 ploidyFile=/nfs/team151/bh10/scripts/genomestrip_bh10/human_ploidy_map_GRCh38.txt 
 tmpDir=${wDir}/tmp
 metaDataDir=${wDir}/metadata
@@ -30,7 +30,7 @@ mkdir -p ${logDir}
 
 echo $(date +"[%b %d %H:%M:%S] Starting preprocessing")
 
-java -cp ${SV_CLASSPATH} -Xmx8g \
+java -cp ${SV_CLASSPATH} -Xmx9g \
     org.broadinstitute.gatk.queue.QCommandLine \
     -S ${SV_DIR}/qscript/SVPreprocess.q \
     -S ${SV_DIR}/qscript/SVQScript.q \
