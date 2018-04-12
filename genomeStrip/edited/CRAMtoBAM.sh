@@ -24,7 +24,6 @@ filename=${CRAM%.cram}
 echo "working with "$filename
 
 oFile=${oDIR}/${filename}.bam
-	
 samtools view ${cramLine} -T ${ref} -b > ${oFile}
 
 echo "complete"
