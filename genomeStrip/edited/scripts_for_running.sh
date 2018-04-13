@@ -1,4 +1,4 @@
-bsub -q long -o /nfs/team151/bh10/scripts/genomestrip_bh10/output/preprocess.c20_2BAM.lng.%J.out -e /nfs/team151/bh10/scripts/genomestrip_bh10/output/preprocess.c20_2BAM.lng.%J.err -R"select[mem>20000] rusage[mem=20000]" -M20000 "/nfs/team151/bh10/scripts/genomestrip_bh10/preprocess.sh INTERVAL_c20_pre_long /nfs/team151/bh10/scripts/genomestrip_bh10/fileLists/bamMiniList.list"
+bsub -q long -o /nfs/team151/bh10/scripts/genomestrip_bh10/output/preprocess.c20_2BAM_WC.%J.out -e /nfs/team151/bh10/scripts/genomestrip_bh10/output/preprocess.c20_2BAM_WC.%J.err -R"select[mem>20000] rusage[mem=20000]" -M20000 "/nfs/team151/bh10/scripts/genomestrip_bh10/new_sw_preprocess.sh INTERVAL_c20_newHead /nfs/team151/bh10/scripts/genomestrip_bh10/fileLists/bamChr20_two_file.list"
  
  
 bsub -q long -o /nfs/team151/bh10/scripts/genomestrip_bh10/output/disc.c20.%J.out -e /nfs/team151/bh10/scripts/genomestrip_bh10/output/disc.c20.%J.err -R"select[mem>20000] rusage[mem=20000]" -M20000 "/nfs/team151/bh10/scripts/genomestrip_bh10/discovery.sh INTERVAL_c20_disc"
