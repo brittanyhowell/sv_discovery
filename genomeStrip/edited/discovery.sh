@@ -2,7 +2,7 @@
 
 cohortId=$1
 echo "cohort ID: " $cohortId
-bamFileList=/nfs/team151/bh10/scripts/genomestrip_bh10/fileLists/bamMiniList.list
+bamFileList=/nfs/team151/bh10/scripts/genomestrip_bh10/fileLists/bamChr20_two_file.list
 echo "file list: "$bamFileList
 
 export PATH=/software/hgi/pkglocal/samtools-1.3.1/bin:$PATH
@@ -18,14 +18,14 @@ echo $(date +"[%b %d %H:%M:%S] Extracting Genome STRiP reference bundle")
 referenceFile=/lustre/scratch115/projects/interval_wgs/analysis/sv/genomes/hs38DH.fa ######path to reference file, copy from "/software/page/svtoolkit/1000G_phase3/human_g1k_hs37d5.fasta"
 echo "Reference FASTA: "$referenceFile
 
-wDir=/lustre/scratch115/projects/interval_wgs/analysis/sv/genomestrip/discovery/chr20 ### path to your working dir
+wDir=/lustre/scratch115/projects/interval_wgs/analysis/sv/genomestrip/discovery/chr20_2Bams ### path to your working dir
 SV_TMPDIR=${wDir}/tmp
 mkdir -p ${SV_TMPDIR}
 runDir=${wDir}/del_output
 mkdir -p ${runDir}
 mkdir -p ${runDir}/logs || exit 1
 
-metaData=/lustre/scratch115/projects/interval_wgs/analysis/sv/genomestrip/preprocess_chr20/metadata #### path to your metadata dir 
+metaData=/lustre/scratch115/projects/interval_wgs/analysis/sv/genomestrip/preprocess_WC #### path to your metadata dir 
 echo "metadata dir: "$metaData
 
 filePrefix=gs_dels
@@ -46,6 +46,7 @@ java -cp ${SV_CLASSPATH} -Xmx10g \
     -tempDir ${SV_TMPDIR} \
     -R ${referenceFile} \
     -md ${metaData} \
+    -intervalList \
     -jobRunner Drmaa \
     -gatkJobRunner Drmaa \
     -jobNative "-q normal" \
