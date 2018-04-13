@@ -32,7 +32,6 @@ filePrefix=gs_dels
 
 echo "Running Deletion discovery pipeline..."
 
-intervals=/nfs/team151/bh10/scripts/genomestrip_bh10/fileLists/chrList.list
 
 # Run discovery
 java -cp ${SV_CLASSPATH} -Xmx10g \
@@ -46,7 +45,6 @@ java -cp ${SV_CLASSPATH} -Xmx10g \
     -tempDir ${SV_TMPDIR} \
     -R ${referenceFile} \
     -md ${metaData} \
-    -intervalList ${intervals} \
     -jobRunner Drmaa \
     -gatkJobRunner Drmaa \
     -jobNative "-q normal" \
