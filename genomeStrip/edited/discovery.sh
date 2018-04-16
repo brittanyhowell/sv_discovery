@@ -25,7 +25,7 @@ runDir=${wDir}/del_output
 mkdir -p ${runDir}
 mkdir -p ${runDir}/logs || exit 1
 
-metaData=/lustre/scratch115/projects/interval_wgs/analysis/sv/genomestrip/preprocess_WC #### path to your metadata dir 
+metaData=/lustre/scratch115/projects/interval_wgs/analysis/sv/genomestrip/preprocess_WC/metadata/ #### path to your metadata dir 
 echo "metadata dir: "$metaData
 
 filePrefix=gs_dels
