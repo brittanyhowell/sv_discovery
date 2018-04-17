@@ -34,8 +34,7 @@ echo "Running Deletion discovery pipeline..."
 
 
 # Run discovery
-java -cp ${SV_CLASSPATH} -Xmx10g \
-    -memLimit 6 \
+java -cp ${SV_CLASSPATH} -Xmx20g -memLimit 6 \
     org.broadinstitute.gatk.queue.QCommandLine \
     -S ${SV_DIR}/qscript/SVDiscovery.q \
     -S ${SV_DIR}/qscript/SVQScript.q \
