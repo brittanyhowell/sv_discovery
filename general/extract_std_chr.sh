@@ -27,25 +27,19 @@
 
 
 
-
-
-################## Extract insert sizes from chr20 for 2 samples ################
-
-
-
-
-fileDIR=/lustre/scratch115/projects/interval_wgs/chr20bams
+fileDIR=/nfs/team151/bh10/scripts/bh10_general/testDIR
 ext=".bam"
 
-oDIR=/lustre/scratch115/projects/interval_wgs/chr20bams_std
+oDIR=/nfs/team151/bh10/scripts/bh10_general/testDIR
 
 
 # Get files with only names
 # listFiles=$1
-listFiles=/nfs/team151/bh10/scripts/genomestrip_bh10/fileLists/two_chr20_file.list
+# listFiles=/nfs/team151/bh10/scripts/genomestrip_bh10/fileLists/bamChr20_one_file.list
+listFiles=/nfs/team151/bh10/scripts/bh10_general/testDIR/small.list 
 files=($(<"${listFiles}"))
 # sFile="${files[$((LSB_JOBINDEX-1))]}" 
-sFile="${files[$((1))]}" 
+sFile="${files[$((0))]}" 
 
 echo "Working on: "${sFile}
 
@@ -54,27 +48,25 @@ fFile=${fileDIR}/${sFile}
 
 filename=${sFile%${ext}}
 
+
+stdFile=${oDIR}/${filename}_std_nohead.sam
+stdFile_w_header=${oDIR}/${filename}_std.sam
 oFile=${oDIR}/${filename}.std.bam
 
+samtools view -H ${fFile} > ${filename}.header
 
-## Get list of nice chromosomes
-fListChr=/nfs/team151/bh10/scripts/genomestrip_bh10/fileLists/chrList.list 
+samtools view ${fFile} | awk '{if($3=="chr1" ||$3=="chr2" ||$3=="chr3" ||$3=="chr4" ||$3=="chr5" ||$3=="chr6" ||$3=="chr7" ||$3=="chr8" ||$3=="chr9" ||$3=="chr10" ||$3=="chr11" ||$3=="chr12" ||$3=="chr13" ||$3=="chr14" ||$3=="chr15" ||$3=="chr16" ||$3=="chr17" ||$3=="chr18" ||$3=="chr19" ||$3=="chr20" ||$3=="chr21" ||$3=="chr22" ||$3=="chrX" ||$3=="chrY" ||$3=="chrM" ) print $0}'| awk '{if($7=="=" || $7=="chr1" ||$7=="chr2" ||$7=="chr7" ||$7=="chr4" ||$7=="chr5" ||$7=="chr6" ||$7=="chr7" ||$7=="chr8" ||$7=="chr9" ||$7=="chr10" ||$7=="chr11" ||$7=="chr12" ||$7=="chr17" ||$7=="chr14" ||$7=="chr15" ||$7=="chr16" ||$7=="chr17" ||$7=="chr18" ||$7=="chr19" ||$7=="chr20" ||$7=="chr21" ||$7=="chr22" ||$7=="chrX" ||$7=="chrY" ||$7=="chrM" ) print $0}' > ${stdFile}
 
-listChr=$(cat "${fListChr}")
-# listChr=($(<"${fListChr}"))
+cat ${filename}.header ${stdFile} > ${stdFile_w_header}
 
-echo $listChr
-
+samtools view -b ${stdFile_w_header} > ${oFile}
 
 
- 
 
-for c in $listChr; do
 
-	echo "c: "$c
-     # awk -F '\t' '$5>20 && $9>=0' | cut -f9 | gzip -f > ${outfile}_20.gz
 
-done
+
+
 
 
 
