@@ -2,7 +2,7 @@
 
 cohortId=$1
 echo "cohort ID: " $cohortId
-bamFileList=/nfs/team151/bh10/scripts/genomestrip_bh10/fileLists/bamChr20_two_file.list
+bamFileList=/nfs/team151/bh10/scripts/genomestrip_bh10/fileLists/fileLists/WG_bam_filepath_two.list
 echo "file list: "$bamFileList
 
 export PATH=/software/hgi/pkglocal/samtools-1.3.1/bin:$PATH
@@ -15,17 +15,18 @@ export SV_DIR=/nfs/team151/software/svtoolkit  #######path to sv toolkit eg /sof
 SV_CLASSPATH="${SV_DIR}/lib/SVToolkit.jar:${SV_DIR}/lib/gatk/GenomeAnalysisTK.jar:${SV_DIR}/lib/gatk/Queue.jar"
 
 echo $(date +"[%b %d %H:%M:%S] Extracting Genome STRiP reference bundle")
-referenceFile=/lustre/scratch115/projects/interval_wgs/analysis/sv/genomes/hs38DH.fa ######path to reference file, copy from "/software/page/svtoolkit/1000G_phase3/human_g1k_hs37d5.fasta"
+# referenceFile=/lustre/scratch115/projects/interval_wgs/analysis/sv/genomes/hs38DH.fa ######path to reference file, copy from "/software/page/svtoolkit/1000G_phase3/human_g1k_hs37d5.fasta"
+referenceFile=/lustre/scratch115/realdata/mdt1/projects/interval_wgs/analysis/gatk/Homo_sapiens_assembly38/Homo_sapiens_assembly38.fasta ###path to reference file copy from "/software/page/svtoolkit/1000G_phase3/human_g1k_hs37d5.fasta"
 echo "Reference FASTA: "$referenceFile
 
-wDir=/lustre/scratch115/projects/interval_wgs/analysis/sv/genomestrip/discovery/chr20_2Bams ### path to your working dir
+wDir=/lustre/scratch115/projects/interval_wgs/analysis/sv/genomestrip/discovery/WG_std_two ### path to your working dir
 SV_TMPDIR=${wDir}/tmp
 mkdir -p ${SV_TMPDIR}
 runDir=${wDir}/del_output
 mkdir -p ${runDir}
 mkdir -p ${runDir}/logs || exit 1
 
-metaData=/lustre/scratch115/projects/interval_wgs/analysis/sv/genomestrip/preprocess_WC/metadata/ #### path to your metadata dir 
+metaData=/lustre/scratch115/projects/interval_wgs/analysis/sv/genomestrip/preprocess_std_two_WG/metadata/ #### path to your metadata dir 
 echo "metadata dir: "$metaData
 
 filePrefix=gs_dels
