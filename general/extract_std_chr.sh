@@ -33,43 +33,48 @@
 
 
 
-## Get a list of the file names with file paths
-# 
-fbamList=/lustre/scratch115/projects/interval_wgs/crams/listCramFiles.list
-bamList=($(<"${fbamList}"))
-bamLine="${bamList[$((LSB_JOBINDEX-1))]}"
 
+fileDIR=/lustre/scratch115/projects/interval_wgs/chr20bams
+ext=".bam"
+
+oDIR=/lustre/scratch115/projects/interval_wgs/chr20bams_std
+
+
+# Get files with only names
+# listFiles=$1
+listFiles=/nfs/team151/bh10/scripts/genomestrip_bh10/fileLists/two_chr20_file.list
+files=($(<"${listFiles}"))
+# sFile="${files[$((LSB_JOBINDEX-1))]}" 
+sFile="${files[$((1))]}" 
+
+echo "Working on: "${sFile}
+
+# # Get the absolute file location.
+fFile=${fileDIR}/${sFile}
+
+filename=${sFile%${ext}}
+
+oFile=${oDIR}/${filename}.std.bam
+
+
+## Get list of nice chromosomes
 fListChr=/nfs/team151/bh10/scripts/genomestrip_bh10/fileLists/chrList.list 
-listChr=($(<"${fListChr}"))
 
+listChr=$(cat "${fListChr}")
+# listChr=($(<"${fListChr}"))
 
-## Generate outfile name
-# Input file is list of samples with no filepaths 
-
-fbamFile=/lustre/scratch115/projects/interval_wgs/crams/listCrams.list
-bamFile=($(<"${fbamFile}"))
-bam="${bamFile[$((LSB_JOBINDEX-1))]}" 
-
-echo "bamLine: ${bamLine}"
-echo "bam: "${bam}
-
-filename=${bam%.cram}
-
-echo "filename: "$filename
-
-outfile=/lustre/scratch115/projects/interval_wgs/analysis/sv/inserts/crams/${filename}
-echo "outfile: "$outfile
+echo $listChr
 
 
 
  
 
-for c in listChr; do
+for c in $listChr; do
+
+	echo "c: "$c
+     # awk -F '\t' '$5>20 && $9>=0' | cut -f9 | gzip -f > ${outfile}_20.gz
+
 done
-
-      | awk -F '\t' '$5>20 && $9>=0' | cut -f9 | gzip -f > ${outfile}_20.gz
-
-
 
 
 
