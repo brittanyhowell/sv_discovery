@@ -2,7 +2,7 @@
 
 cohortId=$1
 echo "cohort ID: " $cohortId
-bamFileList=/nfs/team151/bh10/scripts/genomestrip_bh10/fileLists/fileLists/WG_bam_filepath_two.list
+bamFileList=/nfs/team151/bh10/scripts/genomestrip_bh10/fileLists/WG_bam_std_filepath_two.list
 echo "file list: "$bamFileList
 
 export PATH=/software/hgi/pkglocal/samtools-1.3.1/bin:$PATH
@@ -35,7 +35,7 @@ echo "Running Deletion discovery pipeline..."
 
 
 # Run discovery
-java -cp ${SV_CLASSPATH} -Xmx20g -memLimit 6 \
+java -cp ${SV_CLASSPATH} -Xmx12g \
     org.broadinstitute.gatk.queue.QCommandLine \
     -S ${SV_DIR}/qscript/SVDiscovery.q \
     -S ${SV_DIR}/qscript/SVQScript.q \
