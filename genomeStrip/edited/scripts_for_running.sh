@@ -1,7 +1,7 @@
 bsub -q long -o /nfs/team151/bh10/scripts/genomestrip_bh10/output/preprocess.c20_2BAM_WC.%J.out -e /nfs/team151/bh10/scripts/genomestrip_bh10/output/preprocess.c20_2BAM_WC.%J.err -R"select[mem>20000] rusage[mem=20000]" -M20000 "/nfs/team151/bh10/scripts/genomestrip_bh10/new_sw_preprocess.sh INTERVAL_c20_newHead /nfs/team151/bh10/scripts/genomestrip_bh10/fileLists/bamChr20_two_file.list"
  
  
-bsub -q long -o /nfs/team151/bh10/scripts/genomestrip_bh10/output/disc.c20.%J.out -e /nfs/team151/bh10/scripts/genomestrip_bh10/output/disc.c20.%J.err -R"select[mem>20000] rusage[mem=20000]" -M20000 "/nfs/team151/bh10/scripts/genomestrip_bh10/discovery.sh INTERVAL_c20_disc"
+bsub -q long -o /nfs/team151/bh10/scripts/genomestrip_bh10/output/disc.c20.2BAM.%J.out -e /nfs/team151/bh10/scripts/genomestrip_bh10/output/disc.c20.2BAM.%J.err -R"select[mem>20000] rusage[mem=20000]" -M20000 "/nfs/team151/bh10/scripts/genomestrip_bh10/discovery.sh INTERVAL_c20_disc"
  
 took about 7 hours, needed 1406M mem
  
