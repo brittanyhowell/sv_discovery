@@ -62,13 +62,14 @@ echo "saved header as " ${headFile}
 samtools view ${fFile} | awk '{if($3=="chr1" ||$3=="chr2" ||$3=="chr3" ||$3=="chr4" ||$3=="chr5" ||$3=="chr6" ||$3=="chr7" ||$3=="chr8" ||$3=="chr9" ||$3=="chr10" ||$3=="chr11" ||$3=="chr12" ||$3=="chr13" ||$3=="chr14" ||$3=="chr15" ||$3=="chr16" ||$3=="chr17" ||$3=="chr18" ||$3=="chr19" ||$3=="chr20" ||$3=="chr21" ||$3=="chr22" ||$3=="chrX" ||$3=="chrY" ||$3=="chrM" ) print $0}'| awk '{if($7=="=" || $7=="chr1" ||$7=="chr2" ||$7=="chr7" ||$7=="chr4" ||$7=="chr5" ||$7=="chr6" ||$7=="chr7" ||$7=="chr8" ||$7=="chr9" ||$7=="chr10" ||$7=="chr11" ||$7=="chr12" ||$7=="chr17" ||$7=="chr14" ||$7=="chr15" ||$7=="chr16" ||$7=="chr17" ||$7=="chr18" ||$7=="chr19" ||$7=="chr20" ||$7=="chr21" ||$7=="chr22" ||$7=="chrX" ||$7=="chrY" ||$7=="chrM" ) print $0}' > ${stdFile}
 echo "saved body as " ${stdFile}
 
-cat ${filename}.header ${stdFile} > ${stdFile_w_header}
+cat ${headFile} ${stdFile} > ${stdFile_w_header}
+echo "saved sam as "${stdFile_w_header}
 
 samtools view -b ${stdFile_w_header} > ${oFile}
 
-rm ${stdFile}
-rm ${stdFile_w_header}
-rm ${headFile}
+# rm ${stdFile}
+# rm ${stdFile_w_header}
+# rm ${headFile}
 
 echo "complete"
 
