@@ -1,12 +1,12 @@
 #!/bin/bash
 
-# bsub -J "BDArray[1-226]" -o /nfs/team151/bh10/scripts/breakdancer_bh10/output/con_BD-%I-%J.out -e /nfs/team151/bh10/scripts/breakdancer_bh10/output/con_BD-%I-%J.err "/nfs/team151/bh10/scripts/breakdancer_bh10/config_BD.sh /nfs/team151/bh10/scripts/breakdancer_bh10/WGbams.list"
+# bsub -J "BDArray[1-2]" -o /nfs/team151/bh10/scripts/breakdancer_bh10/output/con_BD-%I-%J.out -e /nfs/team151/bh10/scripts/breakdancer_bh10/output/con_BD-%I-%J.err "/nfs/team151/bh10/scripts/breakdancer_bh10/config_BD.sh /lustre/scratch115/projects/interval_wgs/WGbams_std/list2Bams.list"
 
-fileDIR=/lustre/scratch115/projects/interval_wgs/WGbams
+fileDIR=/lustre/scratch115/projects/interval_wgs/WGbams_std
 ext=".bam"
 
 swDIR=/nfs/users/nfs_k/kw8/software/breakdancer_20130808/breakdancer/
-oDIR=/lustre/scratch115/projects/interval_wgs/analysis/sv/breakdancer/config/
+oDIR=/lustre/scratch115/projects/interval_wgs/analysis/sv/breakdancer/config_2WG_std
 
 
 # Get files with only names
