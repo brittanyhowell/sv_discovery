@@ -26,11 +26,19 @@ oDIR=/lustre/scratch115/projects/interval_wgs/WGbams/
 # 		mkdir $oDIR
 # 	fi 
 
+# ## Check that referece exists, if not, escape
+# 	if [ -f $ref ]; then
+# 		echo "using ref seq at $ref "
+# 	else 
+# 		echo "PROVIDE A REF YOU TOAST"
+# 		exit
+# 	fi 	
+
 
 
 
 # Get files with only names
-fcramFile=/lustre/scratch115/projects/interval_wgs/crams/listCrams.list
+fcramFile=/nfs/team151/bh10/scripts/bh10_general/fileLists/WG_crams.list
 cramFile=($(<"${fcramFile}"))
 CRAM="${cramFile[$((LSB_JOBINDEX-1))]}" 
 
