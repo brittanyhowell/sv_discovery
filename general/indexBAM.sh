@@ -1,11 +1,11 @@
 #!/bin/bash
 
-# bsub -J "BDArray[1-4760]" -o /nfs/team151/bh10/scripts/breakdancer_bh10/output/indexBAM-%I-%J.out -e /nfs/team151/bh10/scripts/breakdancer_bh10/output/indexBAM-%I-%J.err "/nfs/team151/bh10/scripts/breakdancer_bh10/indexBAM.sh /nfs/team151/bh10/scripts/genomestrip_bh10/fileLists/bamList.txt"
+# bsub -J "BDArray[1-225]" -o /nfs/team151/bh10/scripts/bh10_general/output/indexBAM-%J-%I.out -e /nfs/team151/bh10/scripts/bh10_general/output/indexBAM-%J-%I.err "/nfs/team151/bh10/scripts/bh10_general/indexBAM.sh /nfs/team151/bh10/scripts/bh10_general/fileLists/WG_bams.list"
 
-fileDIR=/lustre/scratch115/projects/interval_wgs/chr20bams_newHeader/
+fileDIR=/lustre/scratch115/projects/interval_wgs/WGbams
 ext=".bam"
 
-oDIR=/lustre/scratch115/projects/interval_wgs/chr20bams_newHeader/
+oDIR=/lustre/scratch115/projects/interval_wgs/WGbams
 # listFiles=${oDIR}/fileList.txt
 
 # ## Create file with list of names
