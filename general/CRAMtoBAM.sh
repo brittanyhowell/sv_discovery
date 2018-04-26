@@ -2,13 +2,31 @@
 
 # Convert CRAM files in a DIR to BAMs. 
 
+
+
+
+# bsub -J "cramArray[1-3724]" -o /nfs/team151/bh10/scripts/bh10_general/output/CRAMtoBAM/CRAM-to-BAM-%J-%I.out -e /nfs/team151/bh10/scripts/bh10_general/output/CRAMtoBAM/CRAM-to-BAM-%J-%I.err /nfs/team151/bh10/scripts/bh10_general/CRAMtoBAM.sh
+
+
+
 ref=/lustre/scratch115/resources/ref/Homo_sapiens/HS38DH/hs38DH.fa
 wDIR=/lustre/scratch115/projects/interval_wgs/crams/
 oDIR=/lustre/scratch115/projects/interval_wgs/WGbams/
 
 
+# ## Check that oDIR exists, if not, create. 
+# 	if [ -d $oDIR ]; then
+# 		rm -r $oDIR 
+# 		mkdir $oDIR
+# 		echo "OUT folder exists... replacing"  
+# 		echo $oDIR 
+# 	else 
+# 		echo "creating OUT folder:" 
+# 		echo $oDIR 
+# 		mkdir $oDIR
+# 	fi 
 
-# bsub -J "cramArray[1-226]" -o /nfs/team151/bh10/scripts/bh10_general/output/CRAM-to-BAM-%I-%J.out -e /nfs/team151/bh10/scripts/bh10_general/output/CRAM-to-BAM-%I-%J.err /nfs/team151/bh10/scripts/bh10_general/CRAMtoBAM.sh
+
 
 
 # Get files with only names
