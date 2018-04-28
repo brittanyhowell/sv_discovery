@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# bsub -J "BDmax[1-3724]" -o /nfs/team151/bh10/scripts/breakdancer_bh10/output/BDmax/max_BD-%I-%J.out -e /nfs/team151/bh10/scripts/breakdancer_bh10/output/BDmax/max_BD-%I-%J.err "/nfs/team151/bh10/scripts/breakdancer_bh10/BD-run.sh /nfs/team151/bh10/scripts/breakdancer_bh10/WGbams_config.list"
+# bsub -J "BDmax[1-3724]" -o /nfs/team151/bh10/scripts/breakdancer_bh10/output/BDmax/max_BD-%I-%J.out -e /nfs/team151/bh10/scripts/breakdancer_bh10/output/BDmax/max_BD-%I-%J.err "/nfs/team151/bh10/scripts/breakdancer_bh10/BD-run.sh /nfs/team151/bh10/scripts/bh10_general/fileLists/WG_config.list"
 
 configDIR=/lustre/scratch115/projects/interval_wgs/analysis/sv/breakdancer/config/config_WG_3724
 swDIR=/nfs/users/nfs_k/kw8/software/breakdancer_20130808/breakdancer/
