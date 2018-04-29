@@ -1,6 +1,21 @@
 setwd("~/Documents/Rotation3/data/BD/WG_full/")
 
 
+edit.chr <- function(mat, chrn=1, posn=2, ord=TRUE)  {
+  chr <- as.character(mat[,chrn])
+  chr <- gsub("chr","", chr)
+  chr <- gsub("Chr","", chr)
+  chr[chr=="X"] <- 23
+  chr[chr=="Y"] <- 24
+  mat[,chrn] <- as.numeric(chr)
+  if(ord)  {
+    ## order by chr and start position
+    ord <- order(as.numeric(as.character(mat[,chrn])), as.numeric(as.character(mat[,posn])))
+    mat <- data.frame(mat[ord,], stringsAsFactors=F, row.names=1:nrow(mat))
+  }
+  mat
+}
+
 library(ggplot2)
 
 
@@ -57,7 +72,7 @@ sv.ITX <- subset(fdat, TypeSV=="ITX")
 
 
 ## Other code: 
-    fn <- paste("/lustre/scratch113/projects/g1k-sv/g1k-phaseIII/breakdancer/combined_raw/chr",chr,".txt.gz", sep="")
+    # fn <- paste("/lustre/scratch113/projects/g1k-sv/g1k-phaseIII/breakdancer/combined_raw/chr",chr,".txt.gz", sep="")
     dels <- sv.DEL  # read.delim(fn, stringsAsFactors=F) 
     human <- read.delim("/Users/bh10/Documents/Rotation3/data/hg38/centromere_GRCh38_combined.txt", stringsAsFactors=F, header=T)
     colnames(human) <- c("chr", "start", "stop")
@@ -77,11 +92,11 @@ sv.ITX <- subset(fdat, TypeSV=="ITX")
     summary(indsize)
     
     
-    ## filter for read depth
-    summary(edels$RDratio)
-    ##   Min. 1st Qu.  Median    Mean 3rd Qu.    Max.    NA's 
-    ## 0.0000  0.7164  0.9350  0.9128  1.0810  9.4120     180 
-    indrd <- edels$RDratio < 0.75
+    # ## filter for read depth
+    # summary(edels$RDratio)
+    # ##   Min. 1st Qu.  Median    Mean 3rd Qu.    Max.    NA's 
+    # ## 0.0000  0.7164  0.9350  0.9128  1.0810  9.4120     180 
+    # indrd <- edels$RDratio < 0.75
     
     ## filter for inner distance
     summary(edels[,3]-edels[,2])
@@ -117,8 +132,15 @@ sv.ITX <- subset(fdat, TypeSV=="ITX")
             (as.numeric(v[3])>=(as.numeric(hcentro[,2])-1000) & (as.numeric(v[3])+100)<=(as.numeric(hcentro[,3])+1000)))))
 
 
+    
+#    any(Same Chromosome) &
+ #         ((DEL start>=(CENTRO start-1000) & (DEL start+100)<=(CENTRO End+1000)) |
+  #           (as.numeric(v[3])>=(as.numeric(hcentro[,2])-1000) & (as.numeric(v[3])+100)<=(as.numeric(hcentro[,3])+1000)))))
 
 
+
+    inda <- !indc
+    gdels <- sdels[inda,]
 
 
 
@@ -158,18 +180,5 @@ sv.ITX <- subset(fdat, TypeSV=="ITX")
 # 
 
 # 
-edit.chr <- function(mat, chrn=1, posn=2, ord=TRUE)  {
-  chr <- as.character(mat[,chrn])
-  chr <- gsub("chr","", chr)
-  chr <- gsub("Chr","", chr)
-  chr[chr=="X"] <- 23
-  chr[chr=="Y"] <- 24
-  mat[,chrn] <- as.numeric(chr)
-  if(ord)  {
-    ## order by chr and start position
-    ord <- order(as.numeric(as.character(mat[,chrn])), as.numeric(as.character(mat[,posn])))
-    mat <- data.frame(mat[ord,], stringsAsFactors=F, row.names=1:nrow(mat))
-  }
-  mat
-}
+
 # 
