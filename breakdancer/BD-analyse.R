@@ -84,6 +84,25 @@ sv.ITX <- subset(fdat, TypeSV=="ITX")
     ## edit chrs, so that chr1 -> 1, and chrY -> 24 and unnecessary columns are removed.
     edels <- edit.chr(dels[,c(1,2,5,8:12)])
 
+    
+    ## The gaps
+    gaps <- read.table("/Users/bh10/Documents/Rotation3/data/hg38/gaps_GRCh38.txt", stringsAsFactors=F, header=F)           ## 819
+    names(gaps) <- c("bin","chrom","chromStart","chromEnd","ix","n","size","type","bridge")
+    table(gaps[,8])
+    
+    ## prepare gaps
+    indg <- which(gaps$bridge=="no") 
+    gaps <- edit.chr(gaps[indg,2:4])
+    
+    ## Read in additional gaps
+    fgaps <- read.table("/Users/bh10/Documents/Rotation3/data/hg38/gaps_human.txt", stringsAsFactors=F, header=F)
+    colnames(fgaps) <- c("chr", "start", "stop")
+    table(fgaps[,1])
+    mgaps <- na.omit(edit.chr(fgaps)) # NAs introduced because of non-standard chromosomes
+   
+
+    
+    
     ## filter for deletion size
     summary(edels$SizeSV)
     # Min.  1st Qu.   Median     Mean  3rd Qu.     Max. 
@@ -123,14 +142,18 @@ sv.ITX <- subset(fdat, TypeSV=="ITX")
     
 
     ## filter DEL for location (gaps and centromeres and telomeres and alpha stellites  )
-    indg <- apply(sdels[,1:3], 1, function(v) any(as.numeric(v[1])==as.numeric(hgaps[,1]) &
-           ((as.numeric(v[2])>=(as.numeric(hgaps[,2])-50) & (as.numeric(v[2])+100)<=(as.numeric(hgaps[,3])+50)) |
-           (as.numeric(v[3])>=(as.numeric(hgaps[,2])-50) & (as.numeric(v[3])+100)<=(as.numeric(hgaps[,3])+50)))))
+    indg <- apply(sdels[,1:3], 1, function(v) any(as.numeric(v[1])==as.numeric(gaps[,1]) &
+      ((as.numeric(v[2])>=(as.numeric(gaps[,2])-50) & (as.numeric(v[2])+100)<=(as.numeric(gaps[,3])+50)) |
+       (as.numeric(v[3])>=(as.numeric(gaps[,2])-50) & (as.numeric(v[3])+100)<=(as.numeric(gaps[,3])+50))))) 
     
     indc <- apply(sdels[,1:3], 1, function(v) any(as.numeric(v[1])==as.numeric(hcentro[,1]) &
             ((as.numeric(v[2])>=(as.numeric(hcentro[,2])-1000) & (as.numeric(v[2])+100)<=(as.numeric(hcentro[,3])+1000)) |
             (as.numeric(v[3])>=(as.numeric(hcentro[,2])-1000) & (as.numeric(v[3])+100)<=(as.numeric(hcentro[,3])+1000)))))
 
+    indg <- apply(sdels[,1:3], 1, function(v) any(as.numeric(v[1])==as.numeric(mgaps[,1]) &
+     ((as.numeric(v[2])>=(as.numeric(mgaps[,2])-1000) & (as.numeric(v[2])+100)<=(as.numeric(mgaps[,3])+1000)) |
+      (as.numeric(v[3])>=(as.numeric(mgaps[,2])-1000) & (as.numeric(v[3])+100)<=(as.numeric(mgaps[,3])+1000)))))
+    
 
     
 #    any(Same Chromosome) &
@@ -139,7 +162,7 @@ sv.ITX <- subset(fdat, TypeSV=="ITX")
 
 
 
-    inda <- !indc
+    inda <- !indc & !indg & !indg
     gdels <- sdels[inda,]
 
 
