@@ -6,7 +6,7 @@ out.DIR <- "~/Documents/Rotation3/data/BD/WG_full/"
 
 
 # Sample
-sample.name.ext <- paste(file.DIR,"EGAN00001344523.out", sep="")
+sample.name.ext <- paste(file.DIR,"EGAN00001344523.out", sep="/")
 sample.name <- "EGAN00001344523"
 
 # Coordinate tables
@@ -15,9 +15,10 @@ gaps.coord <- "/Users/bh10/Documents/Rotation3/data/hg38/gaps_GRCh38.txt"       
 more.gaps.coord <- "/Users/bh10/Documents/Rotation3/data/hg38/gaps_human.txt"                   # Table containing coordinates of more gaps
 
 # Out tables
-sv.table.full <-paste(paste("BD_raw_all_SV", sample.name, sep="_"), "txt", sep=".")         # Write to table containing all SVs in std chromosomes
-freq.SV.out <- paste(paste("BD_SV_frequency", sample.name, sep="_"), "txt", sep=".")        # Write to table contatining frequency of each SV type 
-filtered.dels.out <- paste(paste("BD_filtered_dels", sample.name, sep="_"), "txt", sep=".") # write to table containing filtered deletions 
+sv.table.full <- paste(out.DIR, "/", paste("BD_raw_all_SV", sample.name, sep="_"), ".txt", sep="")         # Write to table containing all SVs in std chromosomes
+freq.SV.out <- paste(out.DIR, "/", paste("BD_SV_frequency", sample.name, sep="_"), ".txt", sep="")        # Write to table contatining frequency of each SV type 
+filtered.dels.out <- paste(out.DIR, "/", paste("BD_filtered_DEL", sample.name, sep="_"), ".txt", sep="") # write to table containing filtered deletions 
+sv.table.DEL <- paste(out.DIR, "/", paste("BD_raw_DEL", sample.name, sep="_"), ".txt", sep="")            # Write to table containing DELs in std chromosomes
 
 
 
@@ -64,6 +65,14 @@ for (i in 1:length(chroms))  {
 }
 write.table(fdat, sv.table.full, quote=F, row.names=F,  sep="\t")    # 784,828
  
+# split into SV types
+# sv.CTX <- subset(fdat, TypeSV=="CTX")
+sv.DEL <- subset(fdat, TypeSV=="DEL") # For now, only deletions are considered. 
+# sv.INS <- subset(fdat, TypeSV=="INS")
+# sv.INV <- subset(fdat, TypeSV=="INV")
+# sv.ITX <- subset(fdat, TypeSV=="ITX")
+
+write.table(sv.DEL, sv.table.DEL, quote=F, row.names=F,  sep="\t") 
 
 # Report the number of each kind of SV
 freq.SV <- as.data.frame(table(fdat[,"TypeSV"]))
@@ -72,12 +81,7 @@ colnames(freq.SV) <- c("SVType", sample.name)
 write.table(freq.SV, freq.SV.out, quote=F, row.names=F,  sep="\t")
 ## 
 
-# split into SV types
-# sv.CTX <- subset(fdat, TypeSV=="CTX")
-sv.DEL <- subset(fdat, TypeSV=="DEL") # For now, only deletions are considered. 
-# sv.INS <- subset(fdat, TypeSV=="INS")
-# sv.INV <- subset(fdat, TypeSV=="INV")
-# sv.ITX <- subset(fdat, TypeSV=="ITX")
+
 
 
 # edit chrs, so that chr1 -> 1, and chrY -> 24 and unnecessary columns are removed.
