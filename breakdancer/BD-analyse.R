@@ -1,23 +1,26 @@
+args = commandArgs(TRUE)
+
 ## Arguments: 
 
 # DIRs
-file.DIR <- "~/Documents/Rotation3/data/BD/WG_full/"
-out.DIR <- "~/Documents/Rotation3/data/BD/WG_full/"
+file.DIR <- args[1]
+
+out.DIR <- args[2]
 
 
 # Sample
-sample.name.ext <- paste(file.DIR,"EGAN00001344523.out", sep="/")
-sample.name <- "EGAN00001344523"
+sample.name.ext <- paste(file.DIR,args[3], sep="/") 
+sample.name <- args[4]
 
 # Coordinate tables
-centromere.coord <- "/Users/bh10/Documents/Rotation3/data/hg38/centromere_GRCh38_combined.txt"  # Table containing coordinates of centromeres
-gaps.coord <- "/Users/bh10/Documents/Rotation3/data/hg38/gaps_GRCh38.txt"                       # Table containing coordinates of gaps
-more.gaps.coord <- "/Users/bh10/Documents/Rotation3/data/hg38/gaps_human.txt"                   # Table containing coordinates of more gaps
+centromere.coord <- args[5]  # Table containing coordinates of centromeres
+gaps.coord <- args[6]        # Table containing coordinates of gaps
+more.gaps.coord <- args[7]   # Table containing coordinates of more gaps
 
 # Out tables
-sv.table.full <- paste(out.DIR, "/", paste("BD_raw_all_SV", sample.name, sep="_"), ".txt", sep="")         # Write to table containing all SVs in std chromosomes
+sv.table.full <- paste(out.DIR, "/", paste("BD_raw_all_SV", sample.name, sep="_"), ".txt", sep="")        # Write to table containing all SVs in std chromosomes
 freq.SV.out <- paste(out.DIR, "/", paste("BD_SV_frequency", sample.name, sep="_"), ".txt", sep="")        # Write to table contatining frequency of each SV type 
-filtered.dels.out <- paste(out.DIR, "/", paste("BD_filtered_DEL", sample.name, sep="_"), ".txt", sep="") # write to table containing filtered deletions 
+filtered.dels.out <- paste(out.DIR, "/", paste("BD_filtered_DEL", sample.name, sep="_"), ".txt", sep="")  # Write to table containing filtered deletions 
 sv.table.DEL <- paste(out.DIR, "/", paste("BD_raw_DEL", sample.name, sep="_"), ".txt", sep="")            # Write to table containing DELs in std chromosomes
 
 
