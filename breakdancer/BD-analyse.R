@@ -1,19 +1,25 @@
-setwd("~/Documents/Rotation3/data/BD/WG_full/")
-
-
 ## Arguments: 
 
-sample.name.ext <- "EGAN00001344523.out"
+# DIRs
+file.DIR <- "~/Documents/Rotation3/data/BD/WG_full/"
+out.DIR <- "~/Documents/Rotation3/data/BD/WG_full/"
+
+
+# Sample
+sample.name.ext <- paste(file.DIR,"EGAN00001344523.out", sep="")
 sample.name <- "EGAN00001344523"
 
-sv.table.full <-paste(paste("BD_raw_all_SV", sample.name, sep="_"), "txt", sep=".") # Write to table containing all SVs in std chromosomes. (out file)
-freq.SV.out <- paste(paste("BD_SV_frequency", sample.name, sep="_"), "txt", sep=".")   # Write to table contatining frequency of each SV type (out file)
-
+# Coordinate tables
 centromere.coord <- "/Users/bh10/Documents/Rotation3/data/hg38/centromere_GRCh38_combined.txt"  # Table containing coordinates of centromeres
 gaps.coord <- "/Users/bh10/Documents/Rotation3/data/hg38/gaps_GRCh38.txt"                       # Table containing coordinates of gaps
 more.gaps.coord <- "/Users/bh10/Documents/Rotation3/data/hg38/gaps_human.txt"                   # Table containing coordinates of more gaps
 
-filtered.dels.out <- paste(paste("BD_filtered_dels", sample.name, sep="_"), "txt", sep=".") # Output name for filtered deletions file
+# Out tables
+sv.table.full <-paste(paste("BD_raw_all_SV", sample.name, sep="_"), "txt", sep=".")         # Write to table containing all SVs in std chromosomes
+freq.SV.out <- paste(paste("BD_SV_frequency", sample.name, sep="_"), "txt", sep=".")        # Write to table contatining frequency of each SV type 
+filtered.dels.out <- paste(paste("BD_filtered_dels", sample.name, sep="_"), "txt", sep=".") # write to table containing filtered deletions 
+
+
 
 ## Functions
 edit.chr <- function(mat, chrn=1, posn=2, ord=TRUE)  {
