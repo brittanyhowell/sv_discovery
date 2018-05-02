@@ -43,7 +43,7 @@ edit.chr <- function(mat, chrn=1, posn=2, ord=TRUE)  {
 
 
 ## Libraries
-library(ggplot2)
+library("ggplot2", lib.loc="/nfs/team151/software/Rlibs/")
 
 
 
