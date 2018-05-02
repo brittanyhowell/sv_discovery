@@ -162,5 +162,5 @@ filtered.dels <- part.filt.dels[filt.all,]
 filtered.dels$sample <- sample.name
 write.table(filtered.dels, filtered.dels.out, quote=F, row.names=F,  sep="\t")
 
-
+print("complete, exiting :)")
 
