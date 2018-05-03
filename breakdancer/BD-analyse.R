@@ -57,6 +57,11 @@ df <- read.table(sample.name.ext, fill = TRUE)
 colnames(df) <- c("Chr1", "Pos1", "Orientation1", "Chre2", "Pos2", "Orientation2", "TypeSV", "SizeSV", "ConfidenceScore", "numReadPairs", "numReadPairsPerMapFile", "EstimatedAlleleFreq")
 
 
+# When the number of map files is 1, this column is redundant, and it has a filepath in it, which is not optimal. 
+# Remove if using multiple map files
+df$numReadPairsPerMapFile <- df$numReadPairs
+
+
 # Filter for Chr1-22,X,Y
 
 chroms <- paste("chr", c(1:22,"X","Y"), sep="")
