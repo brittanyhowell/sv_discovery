@@ -32,6 +32,7 @@ edit.chr <- function(mat, chrn=1, posn=2, ord=TRUE)  {
   chr <- gsub("Chr","", chr)
   chr[chr=="X"] <- 23
   chr[chr=="Y"] <- 24
+  chr[chr=="M"] <- 25
   mat[,chrn] <- as.numeric(chr)
   if(ord)  {
     ## order by chr and start position
@@ -64,7 +65,7 @@ df$numReadPairsPerMapFile <- df$numReadPairs
 
 # Filter for Chr1-22,X,Y
 
-chroms <- paste("chr", c(1:22,"X","Y"), sep="")
+chroms <- paste("chr", c(1:22,"X","Y", "M"), sep="")
 fdat <- NULL
 for (i in 1:length(chroms))  {
  print(c("filtering for chromosome", i))
