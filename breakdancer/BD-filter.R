@@ -63,9 +63,9 @@ colnames(df) <- c("Chr1", "Pos1", "Orientation1", "Chre2", "Pos2", "Orientation2
 df$numReadPairsPerMapFile <- df$numReadPairs
 
 
-# Filter for Chr1-22,X,Y
+# Filter for Chr1-22,X,Y,M
 
-chroms <- paste("chr", c(1:22,"X","Y", "M"), sep="")
+chroms <- paste("chr", c(1:22,"X","Y","M"), sep="")
 fdat <- NULL
 for (i in 1:length(chroms))  {
  print(c("filtering for chromosome", i))
