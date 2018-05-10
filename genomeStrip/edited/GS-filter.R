@@ -45,7 +45,7 @@ edit.chr <- function(mat, chrn=1, posn=2, ord=TRUE)  {
 
 ## Libraries
 library("ggplot2", lib.loc="/nfs/team151/software/Rlibs/")
-
+library("plyr")
 
 
 
@@ -118,7 +118,11 @@ write.table(freq.SV, freq.SV.out, quote=F, row.names=F,  sep="\t")
 
 
 # edit chrs, so that chr1 -> 1, and chrY -> 24 and unnecessary columns are removed.
-edels <- edit.chr(sv.DEL[,c(1,2,5,8:12)])
+edels <- edit.chr(sv.DEL)
+
+##########
+
+
 
 # Read in centromeres 
 centro <- read.delim(centromere.coord, stringsAsFactors=F, header=T)
@@ -138,6 +142,13 @@ fgaps <- read.table(more.gaps.coord, stringsAsFactors=F, header=F)
 colnames(fgaps) <- c("chr", "start", "stop")
 table(fgaps[,1])
 mgaps <- na.omit(edit.chr(fgaps)) # NAs introduced? It's because of non-standard chromosomes included in the gap file
+
+# Test read in repeats
+full.repeats <- read.table("/Users/bh10/Documents/Rotation3/data/hg38/ucsc_repeats_GRCh38.txt.gz", header = F)
+repeats <- full.repeats[,c(6:8, 10:13)]
+colnames(repeats) <- c("chr", "start", "end", "strand", "repName", "repClass", "repFamily")
+rep <- na.omit(edit.chr(repeats[1:3]))
+
 
 
 ## Commence filtering    
@@ -185,8 +196,14 @@ indg <- apply(part.filt.dels[,1:3], 1, function(v) any(as.numeric(v[1])==as.nume
 # Centromeres
 indc <- apply(part.filt.dels[,1:3], 1, function(v) any(as.numeric(v[1])==as.numeric(centro[,1]) &  ((as.numeric(v[2])>=(as.numeric(centro[,2])-1000) & (as.numeric(v[2])+100)<=(as.numeric(centro[,3])+1000)) |  (as.numeric(v[3])>=(as.numeric(centro[,2])-1000) & (as.numeric(v[3])+100)<=(as.numeric(centro[,3])+1000)))))
 
-# Combine three sets of 
-filt.all <- !indc & !indg & !indc
+# Repeats
+indr <- apply(edels[,1:3], 1, function(v) 
+  any(as.numeric(v[1])==as.numeric(rep[,1]) &  # same chr
+      ((as.numeric(v[2])>=(as.numeric(rep[,2])-1000) & (as.numeric(v[2])+100)<=(as.numeric(rep[,3])+1000)) |   # start doesn't overlap
+      (as.numeric(v[3])>=(as.numeric(rep[,2])-1000) & (as.numeric(v[3])+100)<=(as.numeric(rep[,3])+1000)))))   # end doesn't overlap
+
+# Combine four sets of filter
+filt.all <- !indc & !indg & !indc & indr
 filtered.dels <- part.filt.dels[filt.all,]
 
 filtered.dels$sample <- sample.name
