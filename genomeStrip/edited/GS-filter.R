@@ -2,26 +2,50 @@ args = commandArgs(TRUE)
 
 ## Arguments: 
 
-# DIRs
-file.DIR <- args[1]
+# # DIRs
+# file.DIR <- args[1]
+# 
+# out.DIR <- args[2]
+# 
+# 
+# # Sample
+# sample.name.ext < #paste(file.DIR,args[3], sep="/") 
+# sample.name <- args[4]
+# 
+# # Coordinate tables
+# centromere.coord <- args[5]  # Table containing coordinates of centromeres
+# gaps.coord <- args[6]        # Table containing coordinates of gaps
+# more.gaps.coord <- args[7]   # Table containing coordinates of more gaps
+# 
+# # Out tables
+# sv.table.full <- paste(out.DIR, "/", paste("BD_raw_all_SV", sample.name, sep="_"), ".txt", sep="")        # Write to table containing all SVs in std chromosomes
+# freq.SV.out <- paste(out.DIR, "/", paste("BD_SV_frequency", sample.name, sep="_"), ".txt", sep="")        # Write to table contatining frequency of each SV type 
+# filtered.dels.out <- paste(out.DIR, "/", paste("BD_filtered_DEL", sample.name, sep="_"), ".txt", sep="")  # Write to table containing filtered deletions 
+# sv.table.DEL <- paste(out.DIR, "/", paste("BD_raw_DEL", sample.name, sep="_"), ".txt", sep="")            # Write to table containing DELs in std chromosomes
 
-out.DIR <- args[2]
+
+
+# DIRs
+file.DIR <- "/Users/bh10/Documents/Rotation3/data/genomestrip/"
+out.DIR <- "/Users/bh10/Documents/Rotation3/data/genomestrip/"
 
 
 # Sample
-sample.name.ext <- "/Users/bh10/Documents/Rotation3/data/genomestrip/gs_cnv.reduced.genotypes.txt"  #paste(file.DIR,args[3], sep="/") 
-sample.name <- args[4]
+sample.name.ext <- paste(file.DIR,"gs_cnv.reduced.genotypes.txt" , sep="/")
+sample.name <- "CNV"
 
 # Coordinate tables
-centromere.coord <- args[5]  # Table containing coordinates of centromeres
-gaps.coord <- args[6]        # Table containing coordinates of gaps
-more.gaps.coord <- args[7]   # Table containing coordinates of more gaps
+centromere.coord <- "/Users/bh10/Documents/Rotation3/data/hg38/centromere_GRCh38_combined.txt"  # Table containing coordinates of centromeres
+gaps.coord <- "/Users/bh10/Documents/Rotation3/data/hg38/gaps_GRCh38.txt"                       # Table containing coordinates of gaps
+more.gaps.coord <- "/Users/bh10/Documents/Rotation3/data/hg38/gaps_human.txt"                   # Table containing coordinates of more gaps
+repeats.coord <- "/Users/bh10/Documents/Rotation3/data/hg38/ucsc_repeats_GRCh38.txt.gz"         # Table containing coordinate of all repeats
 
 # Out tables
-sv.table.full <- paste(out.DIR, "/", paste("BD_raw_all_SV", sample.name, sep="_"), ".txt", sep="")        # Write to table containing all SVs in std chromosomes
-freq.SV.out <- paste(out.DIR, "/", paste("BD_SV_frequency", sample.name, sep="_"), ".txt", sep="")        # Write to table contatining frequency of each SV type 
-filtered.dels.out <- paste(out.DIR, "/", paste("BD_filtered_DEL", sample.name, sep="_"), ".txt", sep="")  # Write to table containing filtered deletions 
-sv.table.DEL <- paste(out.DIR, "/", paste("BD_raw_DEL", sample.name, sep="_"), ".txt", sep="")            # Write to table containing DELs in std chromosomes
+sv.table.full <- paste(out.DIR, "/", paste("GS_raw_all_SV", sample.name, sep="_"), ".txt", sep="")         # Write to table containing all SVs in std chromosomes
+freq.SV.out <- paste(out.DIR, "/", paste("GS_SV_frequency", sample.name, sep="_"), ".txt", sep="")         # Write to table contatining frequency of each SV type 
+filtered.dels.out <- paste(out.DIR, "/", paste("GS_filtered_DEL", sample.name, sep="_"), ".txt", sep="")   # write to table containing filtered deletions 
+sv.table.DEL <- paste(out.DIR, "/", paste("GS_raw_DEL", sample.name, sep="_"), ".txt", sep="")             # Write to table containing DELs in std chromosomes
+
 
 
 
@@ -44,7 +68,7 @@ edit.chr <- function(mat, chrn=1, posn=2, ord=TRUE)  {
 
 
 ## Libraries
-library("ggplot2", lib.loc="/nfs/team151/software/Rlibs/")
+library("ggplot2")#, lib.loc="/nfs/team151/software/Rlibs/")
 library("plyr")
 
 
@@ -118,7 +142,9 @@ write.table(freq.SV, freq.SV.out, quote=F, row.names=F,  sep="\t")
 
 
 # edit chrs, so that chr1 -> 1, and chrY -> 24 and unnecessary columns are removed.
-edels <- edit.chr(sv.DEL)
+edels <- edit.chr(sv.DEL[,c("[1]CHROM","[2]POS0", "[3]END", "[4]ID","[5]GCLENGTH" , "SVType", "freq")])
+
+
 
 ##########
 
@@ -144,7 +170,7 @@ table(fgaps[,1])
 mgaps <- na.omit(edit.chr(fgaps)) # NAs introduced? It's because of non-standard chromosomes included in the gap file
 
 # Test read in repeats
-full.repeats <- read.table("/Users/bh10/Documents/Rotation3/data/hg38/ucsc_repeats_GRCh38.txt.gz", header = F)
+full.repeats <- read.table(repeats.coord, header = F)
 repeats <- full.repeats[,c(6:8, 10:13)]
 colnames(repeats) <- c("chr", "start", "end", "strand", "repName", "repClass", "repFamily")
 rep <- na.omit(edit.chr(repeats[1:3]))
@@ -154,10 +180,10 @@ rep <- na.omit(edit.chr(repeats[1:3]))
 ## Commence filtering    
 
 ## filter for deletion size
-summary(edels$SizeSV)
+summary(edels$X.5.GCLENGTH)
 # Min.  1st Qu.   Median     Mean  3rd Qu.     Max. 
 # -91109      439      633   349727     3781 78180680 
-indsize <- edels$SizeSV > 50 & edels$SizeSV < 1000000
+indsize <- edels$X.5.GCLENGTH > 50 & edels$X.5.GCLENGTH < 1000000
 print("deletion size filtering")
 summary(indsize)
 
@@ -171,39 +197,43 @@ print("inner distance filtering: ")
 summary(indin)
 
 
-
-# filter for number of RPs
-round(summary(edels[,6]))
-#  Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
-#   2       3       6       8       9     1809 
-indrp <- edels[,6] < 20 
-print("read pair filtering:")
-summary(indrp)
+# Do not need to complete for GS
+# # filter for number of RPs
+# round(summary(edels[,6]))
+# #  Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+# #   2       3       6       8       9     1809 
+# indrp <- edels[,6] < 20 
+# print("read pair filtering:")
+# summary(indrp)
 
 # filter for size, inner distance & number of RPs
-part.filt.dels <- edels[which(indsize &  indin & indrp),] #indrd &     
+part.filt.dels <- edels[which(indsize &  indin ),] # & indrp & indrd 
 
 
 
 # Filter for location based features
 
 # Gaps - first one
-indg <- apply(part.filt.dels[,1:3], 1, function(v) any(as.numeric(v[1])==as.numeric(gaps[,1]) & ((as.numeric(v[2])>=(as.numeric(gaps[,2])-50) & (as.numeric(v[2])+100)<=(as.numeric(gaps[,3])+50)) |  (as.numeric(v[3])>=(as.numeric(gaps[,2])-50) & (as.numeric(v[3])+100)<=(as.numeric(gaps[,3])+50))))) 
+indga <- apply(part.filt.dels[,1:3], 1, function(v) any(as.numeric(v[1])==as.numeric(gaps[,1]) & ((as.numeric(v[2])>=(as.numeric(gaps[,2])-50) & (as.numeric(v[2])+100)<=(as.numeric(gaps[,3])+50)) |  (as.numeric(v[3])>=(as.numeric(gaps[,2])-50) & (as.numeric(v[3])+100)<=(as.numeric(gaps[,3])+50))))) 
 
 # Gaps - second one
-indg <- apply(part.filt.dels[,1:3], 1, function(v) any(as.numeric(v[1])==as.numeric(mgaps[,1]) &  ((as.numeric(v[2])>=(as.numeric(mgaps[,2])-1000) & (as.numeric(v[2])+100)<=(as.numeric(mgaps[,3])+1000)) | (as.numeric(v[3])>=(as.numeric(mgaps[,2])-1000) & (as.numeric(v[3])+100)<=(as.numeric(mgaps[,3])+1000)))))
+indgb <- apply(part.filt.dels[,1:3], 1, function(v) any(as.numeric(v[1])==as.numeric(mgaps[,1]) &  ((as.numeric(v[2])>=(as.numeric(mgaps[,2])-1000) & (as.numeric(v[2])+100)<=(as.numeric(mgaps[,3])+1000)) | (as.numeric(v[3])>=(as.numeric(mgaps[,2])-1000) & (as.numeric(v[3])+100)<=(as.numeric(mgaps[,3])+1000)))))
 
 # Centromeres
 indc <- apply(part.filt.dels[,1:3], 1, function(v) any(as.numeric(v[1])==as.numeric(centro[,1]) &  ((as.numeric(v[2])>=(as.numeric(centro[,2])-1000) & (as.numeric(v[2])+100)<=(as.numeric(centro[,3])+1000)) |  (as.numeric(v[3])>=(as.numeric(centro[,2])-1000) & (as.numeric(v[3])+100)<=(as.numeric(centro[,3])+1000)))))
 
 # Repeats
 indr <- apply(edels[,1:3], 1, function(v) 
-  any(as.numeric(v[1])==as.numeric(rep[,1]) &  # same chr
-      ((as.numeric(v[2])>=(as.numeric(rep[,2])-1000) & (as.numeric(v[2])+100)<=(as.numeric(rep[,3])+1000)) |   # start doesn't overlap
-      (as.numeric(v[3])>=(as.numeric(rep[,2])-1000) & (as.numeric(v[3])+100)<=(as.numeric(rep[,3])+1000)))))   # end doesn't overlap
+  any(as.numeric(v[1])==as.numeric(rep[,1]) &  ((as.numeric(v[2])>=(as.numeric(rep[,2])-1000) & (as.numeric(v[2])+100)<=(as.numeric(rep[,3])+1000)) |   (as.numeric(v[3])>=(as.numeric(rep[,2])-1000) & (as.numeric(v[3])+100)<=(as.numeric(rep[,3])+1000)))))   
 
 # Combine four sets of filter
-filt.all <- !indc & !indg & !indc & indr
+
+filtered.dels.indga <- part.filt.dels[!indga,]
+filtered.dels.indgb <- part.filt.dels[!indgb,]
+filtered.dels.indc <- part.filt.dels[!indc,]
+filtered.dels.indr <- part.filt.dels[!indr,]
+
+filt.all <- !indga & !indgb & !indc & !indr 
 filtered.dels <- part.filt.dels[filt.all,]
 
 filtered.dels$sample <- sample.name
