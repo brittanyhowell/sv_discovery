@@ -6,7 +6,7 @@
 ## Required files: list of filenames with extension ".out"
 ## Adjust DIRs as needed
 
-# bsub -J "BD-filter[1-3642]" -o /nfs/team151/bh10/scripts/breakdancer_bh10/output/BD-analyse/BD-analyse-%J-%I.out -e /nfs/team151/bh10/scripts/breakdancer_bh10/output/BD-analyse/BD-analyse-%J-%I.err -R"select[mem>1000] rusage[mem=1000]" -M1000 /nfs/team151/bh10/scripts/breakdancer_bh10/run_BD_filter.sh
+# bsub  -o /nfs/team151/bh10/scripts/genomestrip_bh10/output/filter/GS-filter-%J.out -e /nfs/team151/bh10/scripts/genomestrip_bh10/output/filter/GS-filter-%J.err -R"select[mem>1000] rusage[mem=1000]" -M1000 /nfs/team151/bh10/scripts/genomestrip_bh10/run_GS-filter.sh
 
 echo "commence"
 scriptDIR=/nfs/team151/bh10/scripts/genomestrip_bh10/
