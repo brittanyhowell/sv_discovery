@@ -38,7 +38,7 @@ sample.name <- "CNV"
 centromere.coord <- "/Users/bh10/Documents/Rotation3/data/hg38/centromere_GRCh38_combined.txt"  # Table containing coordinates of centromeres
 gaps.coord <- "/Users/bh10/Documents/Rotation3/data/hg38/gaps_GRCh38.txt"                       # Table containing coordinates of gaps
 more.gaps.coord <- "/Users/bh10/Documents/Rotation3/data/hg38/gaps_human.txt"                   # Table containing coordinates of more gaps
-repeats.coord <- "/Users/bh10/Documents/Rotation3/data/hg38/ucsc_repeats_GRCh38.txt.gz"         # Table containing coordinate of all repeats
+
 
 # Out tables
 sv.table.full <- paste(out.DIR, "/", paste("GS_raw_all_SV", sample.name, sep="_"), ".txt", sep="")         # Write to table containing all SVs in std chromosomes
