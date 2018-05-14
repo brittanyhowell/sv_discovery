@@ -169,32 +169,6 @@ colnames(fgaps) <- c("chr", "start", "stop")
 table(fgaps[,1])
 mgaps <- na.omit(edit.chr(fgaps)) # NAs introduced? It's because of non-standard chromosomes included in the gap file
 
-# Test read in repeats
-full.repeats <- read.table(repeats.coord, header = F)
-repeats <- full.repeats[,c(6:8, 10:13)]
-colnames(repeats) <- c("chr", "start", "end", "strand", "repName", "repClass", "repFamily")
-rep <- na.omit(edit.chr(repeats[1:3]))
-
-library(IRanges)
-rep18 <- subset(rep, chr == 18 )
-start <- rep18$start
-end <- rep18$end
-
-x <- IRanges(start=start, end=end)
-cov <- coverage(x)
-# plot coverage
-plot(cov, type = "l"  , xlab = "position",   ylab = "frequency of gaps", main = "Coverage ")
-
-
-ggplot(rep) + 
-  geom_histogram(aes(x=start),binwidth=1e5) + 
-  facet_wrap(~ chr,ncol=2) + # seperate plots for each chr, x-scales can differ from chr to chr
-  ggtitle("repeat coverage") +
-  xlab("Position in the genome") + 
-  ylab("repeat density") + 
-  theme_bw() 
-
-
 
 ## Commence filtering    
 
@@ -241,17 +215,8 @@ indgb <- apply(part.filt.dels[,1:3], 1, function(v) any(as.numeric(v[1])==as.num
 # Centromeres
 indc <- apply(part.filt.dels[,1:3], 1, function(v) any(as.numeric(v[1])==as.numeric(centro[,1]) &  ((as.numeric(v[2])>=(as.numeric(centro[,2])-1000) & (as.numeric(v[2])+100)<=(as.numeric(centro[,3])+1000)) |  (as.numeric(v[3])>=(as.numeric(centro[,2])-1000) & (as.numeric(v[3])+100)<=(as.numeric(centro[,3])+1000)))))
 
-# Repeats
-indr <- apply(edels[,1:3], 1, function(v)   any(as.numeric(v[1])==as.numeric(rep[,1]) &  ((as.numeric(v[2])>=(as.numeric(rep[,2])-1000) & (as.numeric(v[2])+100)<=(as.numeric(rep[,3])+1000)) |   (as.numeric(v[3])>=(as.numeric(rep[,2])-1000) & (as.numeric(v[3])+100)<=(as.numeric(rep[,3])+1000)))))   
-
-# Combine four sets of filter
-
-filtered.dels.indga <- part.filt.dels[!indga,]
-filtered.dels.indgb <- part.filt.dels[!indgb,]
-filtered.dels.indc <- part.filt.dels[!indc,]
-filtered.dels.indr <- part.filt.dels[!indr,]
-
-filt.all <- !indga & !indgb & !indc & !indr 
+ 
+filt.all <- !indga & !indgb & !indc 
 filtered.dels <- part.filt.dels[filt.all,]
 filtered.dels <- edels[filt.all,]
 
