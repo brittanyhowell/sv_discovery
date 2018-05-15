@@ -9,152 +9,114 @@ import (
 	"strings"
 )
 
-type coordfile struct {
+// var (
+// 	chr   int
+// 	start int
+// 	end   int
+// )
+
+type hats struct {
 	chr   int
 	start int
 	end   int
 }
 
-var (
+type genes struct {
 	chr   int
 	start int
 	end   int
-)
+	name  string
+}
 
-// func readLines(path string) ([]string, error) {
-// 	file, err := os.Open(path)
-// 	if err != nil {
-// 		return nil, err
-// 	}
-// 	defer file.Close()
-
-// 	var lines []string
-// 	scanner := bufio.NewScanner(file)
-// 	for scanner.Scan() {
-// 		lines = append(lines, scanner.Text())
-// 	}
-// 	return lines, scanner.Err()
-// }
+var g genes
+var d hats
 
 func main() {
 
-	// lines, err := readLines("/Users/bh10/Documents/Rotation3/scripts/general/test_genes.txt")
-	// if err != nil {
-	// 	log.Fatalf("readLines: %s", err)
-	// }
-	// for i, line := range lines {
-	// 	fmt.Println("num: ", i, "line: ", line[0])
-
-	// dels = coordfile{
-	// 	chr:   [0],
-	// 	start: [1],
-	// 	end:   [2],
-	// }
-
-	// }
-
-	// var(
-	// delfile     string
-	// genefile string
-	// )
-
-	// delfile = "~/Documents/Rotation3/scripts/general/test_dels.txt"
-	// genefile ="~/Documents/Rotation3/scripts/general/test_genes.txt"
-
-	file, err := os.Open("/Users/bh10/Documents/Rotation3/scripts/general/test_genes.txt")
+	fgene, err := os.Open("/Users/bh10/Documents/Rotation3/scripts/general/test_genes.txt")
 	if err != nil {
 		log.Fatal(err)
 	}
-	defer file.Close()
+	defer fgene.Close()
 
 	var geneAll []string
 
-	scanner := bufio.NewScanner(file)
-	for scanner.Scan() {
-		geneAll = append(geneAll, scanner.Text())
-		fmt.Println("all:", scanner.Text())
+	sGene := bufio.NewScanner(fgene)
+	for sGene.Scan() {
+		geneAll = append(geneAll, sGene.Text())
 	}
 
-	if err := scanner.Err(); err != nil {
+	if err := sGene.Err(); err != nil {
 		log.Fatal(err)
 	}
-	// var dels coordfile
-	for _, r := range geneAll {
 
-		fmt.Println("The lines???", r)
-		spl := strings.Split(r, "\t")
+	fdel, err := os.Open("/Users/bh10/Documents/Rotation3/scripts/general/test_dels.txt")
+	if err != nil {
+		log.Fatal(err)
+	}
+	defer fdel.Close()
 
-		fmt.Println("split: ", spl[2])
+	var delsAll []string
 
-		cfloat, _ := strconv.ParseFloat(spl[0], 0)
-		sfloat, _ := strconv.ParseFloat(spl[1], 1)
-		efloat, _ := strconv.ParseFloat(spl[2], 1)
-
-		chrom := int(cfloat)
-		start := int(sfloat)
-		end := int(efloat)
-
+	sDel := bufio.NewScanner(fdel)
+	i := 0
+	for sDel.Scan() {
+		if i > 0 { // IMPORTANT - ASSUMES THERE IS A HEADER, ELSE IT WILL SKIP THE FIRST DEL
+			delsAll = append(delsAll, sDel.Text())
+		}
+		i++
 	}
 
-	fmt.Println("Dels:", dels)
-	// // This file NEEDS to be a BED3
-	// locD, err := os.Open("/Users/bh10/Documents/Rotation3/scripts/general/test_genes.txt")
-	// if err != nil {
-	// 	log.Printf("error: could not open %s to read %v", locD, err)
-	// }
-	// defer locD.Close()
+	if err := sDel.Err(); err != nil {
+		log.Fatal(err)
+	}
 
-	// lr, err := bed.NewReader(locD, 3)
-	// if err != nil {
-	// 	log.Printf("error in NewReader: %s, %v", locD, err)
-	// }
+	// commence reading
 
-	// fsc := featio.NewScanner(lr)
+	for _, rG := range geneAll {
 
-	// for fsc.Next() {
-	// 	f := fsc.Feat().(*bed.Bed3)
-	// 	fmt.Printf("chr: %v, start: %v, end: %v, \n", f.Chrom, f.Start(), f.End())
-	// }
+		gspl := strings.Split(rG, "\t")
 
-	// locG, err := os.Open("/Users/bh10/Documents/Rotation3/scripts/general/test_genes.txt")
-	// if err != nil {
-	// 	log.Printf("error: could not open %s to read %v", locG, err)
-	// }
-	// defer locG.Close()
+		gcf, _ := strconv.ParseFloat(gspl[0], 1)
+		gsf, _ := strconv.ParseFloat(gspl[1], 1)
+		gef, _ := strconv.ParseFloat(gspl[2], 1)
 
-	// r, err := bed.NewReader(locG, 3)
-	// if err != nil {
-	// 	log.Printf("error in NewReader: %s, %v", locG, err)
-	// }
+		gci := int(gcf)
+		gsi := int(gsf)
+		gei := int(gef)
 
-	// gsc := featio.NewScanner(r)
-	// fmt.Println("Genes:")
-	// for gsc.Next() {
-	// 	f := gsc.Feat().(*bed.Bed3)
-	// 	fmt.Printf("chr: %v, start: %v, end: %v, \n", f.Chrom, f.Start(), f.End())
-	// }
+		gname := gspl[3]
 
-	// scanner := bufio.NewScanner(loc)
+		g = genes{
+			chr:   gci,
+			start: gsi,
+			end:   gei,
+			name:  gname,
+		}
+		fmt.Println("this is the gene", g.chr, g.start, g.end, g.name)
 
-	// // var dels coordfile
-	// var lines []string
-	// for scanner.Scan() { // internally, it advances token based on seperator
-	// 	// 	// line := scanner.Bytes()
-	// 	// 	// fmt.Println("Line", string(line[0:4]))
+		for _, rD := range delsAll {
 
-	// 	// dels = coordfile{
-	// 	// 	chr:   scanner.Text()[0],
-	// 	// 	start: scanner.Text()[1],
-	// 	// 	end:   scanner.Text()[2],
-	// 	// }
-	// 	// lines = append(lines, scanner.Text())
-	// 	fmt.Println("some text", scanner.Text()) // token in unicode-char
-	// 	// 	// fmt.Println(scanner.Bytes()) // token in bytes
+			dspl := strings.Split(rD, "\t")
 
-	// 	dels = append(nodes, &Node{ipaddr: scanner.Text()})
-	// 	fmt.Println(nodes[i])
+			dcf, _ := strconv.ParseFloat(dspl[0], 1)
+			dsf, _ := strconv.ParseFloat(dspl[1], 1)
+			def, _ := strconv.ParseFloat(dspl[2], 1)
 
-	// }
-	// fmt.Println("the lines: ", lines)
-	// fmt.Println(dels)
+			dci := int(dcf)
+			dsi := int(dsf)
+			dei := int(def)
+
+			d = hats{
+				chr:   dci,
+				start: dsi,
+				end:   dei,
+			}
+
+			fmt.Println("3 from dels", d.chr, d.start, d.end)
+
+		}
+	}
 }
+
+// fmt.Println("Dels:", dels)
