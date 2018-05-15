@@ -2,18 +2,13 @@ package main
 
 import (
 	"bufio"
+	"flag"
 	"fmt"
 	"log"
 	"os"
 	"strconv"
 	"strings"
 )
-
-// var (
-// 	chr   int
-// 	start int
-// 	end   int
-// )
 
 type dels struct {
 	chr   int
@@ -32,11 +27,22 @@ var (
 	g        genes
 	d        dels
 	delCount int
+
+	geneIn  string
+	delIn   string
+	outPath string
+	geneOut string
 )
 
 func main() {
+	flag.StringVar(&geneIn, "geneIn", "", "Input gene list")
+	flag.StringVar(&delIn, "delIn", "", "input deletion list")
+	flag.StringVar(&outPath, "outPath", "", "Output file path")
+	// flag.StringVar(&SJMap3, "SJMap3", "", "gene (expanded) file")
+	flag.StringVar(&geneOut, "geneOut", "", "gene (summary) file")
+	flag.Parse()
 
-	fgene, err := os.Open("/Users/bh10/Documents/Rotation3/scripts/general/test_genes.txt")
+	fgene, err := os.Open(geneIn)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -53,7 +59,7 @@ func main() {
 		log.Fatal(err)
 	}
 
-	fdel, err := os.Open("/Users/bh10/Documents/Rotation3/scripts/general/test_dels.txt")
+	fdel, err := os.Open(delIn)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -73,19 +79,18 @@ func main() {
 	if err := sDel.Err(); err != nil {
 		log.Fatal(err)
 	}
-	outPath := "/Users/bh10/Documents/Rotation3/scripts/general/"
-	geneFullfile := "geneFullList.txt"
 
-	geneOut := fmt.Sprintf("%v%v", outPath, geneFullfile)
-	gOut, err := os.Create(geneOut)
-	if err != nil {
-		log.Fatalf("failed to create output %s: %v", geneOut, err)
-	}
-	defer gOut.Close()
+	// Add this one back in if you want to list specifically the deletions which took out the gene
+	// geneFullfile := "geneFullList.txt"
 
-	genefile := "geneList.txt"
+	// geneOut := fmt.Sprintf("%v%v", outPath, geneFullfile)
+	// gOut, err := os.Create(geneOut)
+	// if err != nil {
+	// 	log.Fatalf("failed to create output %s: %v", geneOut, err)
+	// }
+	// defer gOut.Close()
 
-	genesumOut := fmt.Sprintf("%v%v", outPath, genefile)
+	genesumOut := fmt.Sprintf("%v%v", outPath, geneOut)
 	gsOut, err := os.Create(genesumOut)
 	if err != nil {
 		log.Fatalf("failed to create output %s: %v", genesumOut, err)
@@ -161,16 +166,16 @@ func main() {
 				}
 				fmt.Println("p: ", p)
 
-				fmt.Fprintf(gOut, "%v\t%v\t%v\t%v\t%v\t%v\t%v\t%v\n",
-					g.name,
-					g.chr,
-					g.start,
-					g.end,
-					p,
-					d.chr,
-					d.start,
-					d.end,
-				)
+				// fmt.Fprintf(gOut, "%v\t%v\t%v\t%v\t%v\t%v\t%v\t%v\n",
+				// 	g.name,
+				// 	g.chr,
+				// 	g.start,
+				// 	g.end,
+				// 	p,
+				// 	d.chr,
+				// 	d.start,
+				// 	d.end,
+				// )
 
 				fmt.Fprintf(gsOut, "%v\t%v\t%v\t%v\t%v\n",
 					g.name,
