@@ -132,7 +132,6 @@ func main() {
 		currentChrom = g.chr
 
 		for _, rD := range delsAll {
-
 			dspl := strings.Split(rD, "\t")
 
 			dcf, _ := strconv.ParseFloat(dspl[0], 1)
@@ -148,13 +147,13 @@ func main() {
 				start: dsi,
 				end:   dei,
 			}
+
 			// fmt.Println("Current del: ", d.chr, d.start, d.end)
 
 			// check chr the same
 			if g.chr != d.chr {
 				continue
 			}
-
 			if g.start <= d.end && g.end >= d.start {
 				// If there is a del
 				delCount++
@@ -189,19 +188,15 @@ func main() {
 
 		}
 		if delCount == 1 {
-			fmt.Fprintf(gsOut, "%v_%v_%v:%v\t%v\t%v\t%v\t%v\t%v\n",
+			fmt.Fprintf(gsOut, "%v_%v_%v:%v\t%v\n",
 				g.name,
 				g.chr,
 				g.start,
 				g.end,
 				p,
-				d.chr,
-				d.start,
-				d.end,
-				d.end-d.start, // length
 			)
 		} else {
-			fmt.Fprintf(gsOut, "%v_%v_%v:%v\t%v\t0\t0\t0\t0\n",
+			fmt.Fprintf(gsOut, "%v_%v_%v:%v\t%v\n",
 				g.name,
 				g.chr,
 				g.start,
@@ -209,9 +204,7 @@ func main() {
 				delCount,
 			)
 		}
-
 	}
-
 }
 
 func characteriseDel(gstart, gend, dstart, dend int) string {
