@@ -7,5 +7,8 @@ delIn="/Users/bh10/Documents/Rotation3/scripts/general/test_dels.txt"
 geneIn="/Users/bh10/Documents/Rotation3/scripts/general/test_genes.txt"
 
 
+echo "commence intersect"
 
 go run intersect_genes.go -outPath ${outPath} -geneOut ${geneOut} -delIn ${delIn} -geneIn ${geneIn}
+
+echo "complete"
