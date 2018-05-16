@@ -189,21 +189,23 @@ func main() {
 
 		}
 		if delCount == 1 {
-			fmt.Fprintf(gsOut, "%v_%v_%v:%v\t%v\t%v\n",
+			fmt.Fprintf(gsOut, "%v_%v_%v:%v\t%v\t%v\t%v\t%v\t%v\n",
 				g.name,
 				g.chr,
 				g.start,
 				g.end,
 				p,
+				d.chr,
+				d.start,
+				d.end,
 				d.end-d.start, // length
 			)
 		} else {
-			fmt.Fprintf(gsOut, "%v_%v_%v:%v\t%v\t%v\n",
+			fmt.Fprintf(gsOut, "%v_%v_%v:%v\t%v\t0\t0\t0\t0\n",
 				g.name,
 				g.chr,
 				g.start,
 				g.end,
-				delCount,
 				delCount,
 			)
 		}
