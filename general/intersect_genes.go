@@ -29,6 +29,7 @@ var (
 	delCount int
 
 	currentChrom int
+	p            float32
 
 	geneIn  string
 	delIn   string
@@ -161,7 +162,6 @@ func main() {
 				delType := characteriseDel(g.start, g.end, d.start, d.end)
 				fmt.Println("Del in", g.name, ", type: ", delType)
 
-				var p float32
 				switch delType {
 				case "within":
 					p = calcOverlap(d.end, d.start, g.end, g.start)
@@ -172,6 +172,7 @@ func main() {
 				case "spillRight":
 					p = calcRightSpill(d.end, d.start, g.end, g.start)
 				}
+
 				fmt.Println("p: ", p)
 
 				// fmt.Fprintf(gOut, "%v\t%v\t%v\t%v\t%v\t%v\t%v\t%v\n",
@@ -184,35 +185,31 @@ func main() {
 				// 	d.start,
 				// 	d.end,
 				// )
-
-				fmt.Fprintf(gsOut, "%v\t%v\t%v\t%v\t%v\t%v\t%v\t%v\t%v\n",
-					g.name,
-					g.chr,
-					g.start,
-					g.end,
-					p,
-					d.chr,
-					d.start,
-					d.end,
-					d.end-d.start, // length
-				)
 			}
 
 		}
-
-		// still print genes with no deletions for completeness
-		// fmt.Println("no dels in ", g.name)
-
-		if delCount == 0 {
-			fmt.Fprintf(gsOut, "%v\t%v\t%v\t%v\t%v\n",
+		if delCount == 1 {
+			fmt.Fprintf(gsOut, "%v_%v_%v:%v\t%v\t%v\n",
+				g.name,
+				g.chr,
+				g.start,
+				g.end,
+				p,
+				d.end-d.start, // length
+			)
+		} else {
+			fmt.Fprintf(gsOut, "%v_%v_%v:%v\t%v\t%v\n",
 				g.name,
 				g.chr,
 				g.start,
 				g.end,
 				delCount,
+				delCount,
 			)
 		}
+
 	}
+
 }
 
 func characteriseDel(gstart, gend, dstart, dend int) string {
