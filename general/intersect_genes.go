@@ -102,6 +102,8 @@ func main() {
 	// commence reading
 
 	for _, rG := range geneAll {
+		// make count of dels 0, before searching dels for a match
+		delCount = 0
 
 		gspl := strings.Split(rG, "\t")
 
@@ -128,9 +130,6 @@ func main() {
 		}
 		currentChrom = g.chr
 
-		// make count of dels 0, before searching dels for a match
-		delCount = 0
-
 		for _, rD := range delsAll {
 
 			dspl := strings.Split(rD, "\t")
@@ -156,8 +155,11 @@ func main() {
 			}
 
 			if g.start <= d.end && g.end >= d.start {
+				// If there is a del
+				delCount++
+
 				delType := characteriseDel(g.start, g.end, d.start, d.end)
-				fmt.Println("Deletion found in ", g.name, ", type: ", delType)
+				fmt.Println("Del in", g.name, ", type: ", delType)
 
 				var p float32
 				switch delType {
@@ -183,7 +185,7 @@ func main() {
 				// 	d.end,
 				// )
 
-				fmt.Fprintf(gsOut, "%v\t%v\t%v\t%v\t%v\t%v\t%v\t%v\n",
+				fmt.Fprintf(gsOut, "%v\t%v\t%v\t%v\t%v\t%v\t%v\t%v\t%v\n",
 					g.name,
 					g.chr,
 					g.start,
@@ -192,20 +194,22 @@ func main() {
 					d.chr,
 					d.start,
 					d.end,
+					d.end-d.start, // length
 				)
 			}
-			// If there is a del
-			delCount++
+
 		}
+
 		// still print genes with no deletions for completeness
 		// fmt.Println("no dels in ", g.name)
+
 		if delCount == 0 {
 			fmt.Fprintf(gsOut, "%v\t%v\t%v\t%v\t%v\n",
 				g.name,
 				g.chr,
 				g.start,
 				g.end,
-				0,
+				delCount,
 			)
 		}
 	}
