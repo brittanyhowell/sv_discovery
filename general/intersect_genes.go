@@ -28,6 +28,8 @@ var (
 	d        dels
 	delCount int
 
+	currentChrom int
+
 	geneIn  string
 	delIn   string
 	outPath string
@@ -119,7 +121,12 @@ func main() {
 			end:   gei,
 			name:  gname,
 		}
-		fmt.Println("Gene for comparison:", g.chr, g.start, g.end, g.name)
+		// fmt.Println("Gene for comparison:", g.chr, g.start, g.end, g.name)
+
+		if currentChrom != g.chr {
+			fmt.Println("working on chromosome: ", g.chr)
+		}
+		currentChrom = g.chr
 
 		// make count of dels 0, before searching dels for a match
 		delCount = 0
@@ -150,7 +157,7 @@ func main() {
 
 			if g.start <= d.end && g.end >= d.start {
 				delType := characteriseDel(g.start, g.end, d.start, d.end)
-				fmt.Println("Deletion found in gene, type: ", delType)
+				fmt.Println("Deletion found in ", g.name, ", type: ", delType)
 
 				var p float32
 				switch delType {
@@ -191,7 +198,7 @@ func main() {
 			delCount++
 		}
 		// still print genes with no deletions for completeness
-		fmt.Println("no dels in ", g.name)
+		// fmt.Println("no dels in ", g.name)
 		if delCount == 0 {
 			fmt.Fprintf(gsOut, "%v\t%v\t%v\t%v\t%v\n",
 				g.name,
