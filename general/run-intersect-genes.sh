@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# bsub -J "int[1-3643]" -o /nfs/team151/bh10/scripts/bh10_general/output/intersectBD/intersect-%J-%I.out -e /nfs/team151/bh10/scripts/bh10_general/output/intersectBD/intersect-%J-%I.err "/nfs/team151/bh10/scripts/bh10_general/run-intersect-genes.sh 
+# bsub -J "int[1-3643]" -o /nfs/team151/bh10/scripts/bh10_general/output/intersectBD/intersect-%J-%I.out -e /nfs/team151/bh10/scripts/bh10_general/output/intersectBD/intersect-%J-%I.err "/nfs/team151/bh10/scripts/bh10_general/run-intersect-genes.sh" 
 
 
 # outPath - output directory
@@ -26,7 +26,7 @@ samplenoExt=${delIn%.txt}
 sampleName=$(echo $samplenoExt | sed 's/BD_filtered_DEL_//g')
 
 
-outPath="/lustre/scratch115/projects/interval_wgs/analysis/sv/geneIntersect/BD/" 
+outPath="/lustre/scratch115/projects/interval_wgs/analysis/sv/geneIntersect/BDLoud/" 
 geneOut="${sampleName}_geneList.txt" 
 
 
