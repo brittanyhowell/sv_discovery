@@ -119,7 +119,6 @@ func main() {
 			end:   gei,
 			name:  gname,
 		}
-		fmt.Println()
 		fmt.Println("Gene for comparison:", g.chr, g.start, g.end, g.name)
 
 		// make count of dels 0, before searching dels for a match
@@ -142,7 +141,7 @@ func main() {
 				start: dsi,
 				end:   dei,
 			}
-			fmt.Println("Current del: ", d.chr, d.start, d.end)
+			// fmt.Println("Current del: ", d.chr, d.start, d.end)
 
 			// check chr the same
 			if g.chr != d.chr {
@@ -177,19 +176,22 @@ func main() {
 				// 	d.end,
 				// )
 
-				fmt.Fprintf(gsOut, "%v\t%v\t%v\t%v\t%v\n",
+				fmt.Fprintf(gsOut, "%v\t%v\t%v\t%v\t%v\t%v\t%v\t%v\n",
 					g.name,
 					g.chr,
 					g.start,
 					g.end,
 					p,
+					d.chr,
+					d.start,
+					d.end,
 				)
 			}
 			// If there is a del
 			delCount++
 		}
 		// still print genes with no deletions for completeness
-		fmt.Println("no genes in ", g.name)
+		fmt.Println("no dels in ", g.name)
 		if delCount == 0 {
 			fmt.Fprintf(gsOut, "%v\t%v\t%v\t%v\t%v\n",
 				g.name,
