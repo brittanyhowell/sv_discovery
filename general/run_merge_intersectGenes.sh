@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# bsub  -o /nfs/team151/bh10/scripts/bh10_general/output/merge-%I.out -e /nfs/team151/bh10/scripts/bh10_general/output/merge-%I.err -R"select[mem>1000] rusage[mem=1000]" -M1000 /nfs/team151/bh10/scripts/bh10_general/mergeTab.sh
+# bsub  -o /nfs/team151/bh10/scripts/bh10_general/output/merge-%J.out -e /nfs/team151/bh10/scripts/bh10_general/output/merge-%J.err -R"select[mem>4000] rusage[mem=4000]" -M4000 /nfs/team151/bh10/scripts/bh10_general/mergeTab.sh
 
 echo "commence"
 scriptDIR=/nfs/team151/bh10/scripts/bh10_general/
