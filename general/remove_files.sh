@@ -15,3 +15,4 @@ while read f; do
 done <$listFiles
 
 echo "purge complete"
+
