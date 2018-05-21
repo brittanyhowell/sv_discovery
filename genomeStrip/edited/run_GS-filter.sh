@@ -20,27 +20,32 @@ scriptDIR=/nfs/team151/bh10/scripts/genomestrip_bh10/
 # args[5] = centromerecoord
 # args[6] = gapscoord
 # args[7] = moregapscoord
+# args[8] = selectedChroms
 
 
 ## DIRs
 # GS output file DIR
+## required columns: 
 filDIR=/lustre/scratch115/projects/interval_wgs/analysis/sv/kw8/genomestrip/cnv_discovery/cnv_output/results/
 # Where the output tables will go
-outDIR=/lustre/scratch115/projects/interval_wgs/analysis/sv/breakdancer/filtered/WG_3642/
+outDIR=/lustre/scratch115/projects/interval_wgs/analysis/sv/genomestrip/filtered_sv/
 
 ## Samples
-samplenameext="gs_cnv.genotypes.vcf.gz"
-samplename=${samplenameext%.vcf.gz}
+samplenameext="gs_cnv.reduced.genotypes.txt"
+samplename=${samplenameext%.txt}
 
 ## Coordinate files
 centromerecoord="/nfs/users/nfs_k/kw8/data/genome_info/centromere_GRCh38_combined.txt"
 gapscoord="/nfs/users/nfs_k/kw8/data/genome_info/gaps_GRCh38.txt"   
 morgapscoord="/nfs/users/nfs_k/kw8/data/genome_info/gaps_human.txt" 
 
-## Run R script with trailing Args
-echo "Command: Rscript ${scriptDIR}/BD-filter.R ${filDIR} ${outDIR} ${samplenameext} ${samplename} ${centromerecoord} ${gapscoord} ${morgapscoord}"
+## Which chromosomes
+selectedChroms="autosomes" # When blank, sex chromosomes are included.
 
-/software/R-3.4.0/bin/Rscript ${scriptDIR}/BD-filter.R ${filDIR} ${outDIR} ${samplenameext} ${samplename} ${centromerecoord} ${gapscoord} ${morgapscoord}
+## Run R script with trailing Args
+echo "Command: Rscript ${scriptDIR}/GS_filter.R ${filDIR} ${outDIR} ${samplenameext} ${samplename} ${centromerecoord} ${gapscoord} ${morgapscoord} ${selectedChroms}"
+
+/software/R-3.4.0/bin/Rscript ${scriptDIR}/GS_filter.R ${filDIR} ${outDIR} ${samplenameext} ${samplename} ${centromerecoord} ${gapscoord} ${morgapscoord}
 
 echo "complete"
 
