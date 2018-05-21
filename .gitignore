@@ -1,4 +1,11 @@
 #Untracked files
 .DS_Store
+.Rapp.history
+16April/
 soranzo_scripts/
 genomeStrip/genomestrip.pptx
+breakdancer/README
+breakdancer/template/
+.ipynb_checkpoints/
+
+
