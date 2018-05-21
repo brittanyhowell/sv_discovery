@@ -40,9 +40,9 @@ gapscoord="/nfs/users/nfs_k/kw8/data/genome_info/gaps_GRCh38.txt"
 morgapscoord="/nfs/users/nfs_k/kw8/data/genome_info/gaps_human.txt" 
 
 ## Run R script with trailing Args
-echo "Command: Rscript ${scriptDIR}/BD-analyse.R ${filDIR} ${outDIR} ${samplenameext} ${samplename} ${centromerecoord} ${gapscoord} ${morgapscoord}"
+echo "Command: Rscript ${scriptDIR}/BD-filter.R ${filDIR} ${outDIR} ${samplenameext} ${samplename} ${centromerecoord} ${gapscoord} ${morgapscoord}"
 
-/software/R-3.4.0/bin/Rscript ${scriptDIR}/BD-analyse.R ${filDIR} ${outDIR} ${samplenameext} ${samplename} ${centromerecoord} ${gapscoord} ${morgapscoord}
+/software/R-3.4.0/bin/Rscript ${scriptDIR}/BD-filter.R ${filDIR} ${outDIR} ${samplenameext} ${samplename} ${centromerecoord} ${gapscoord} ${morgapscoord}
 
 echo "complete"
 
