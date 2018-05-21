@@ -6,26 +6,29 @@ args = commandArgs(TRUE)
 # file.DIR <- args[1]
 # 
 # out.DIR <- args[2]
-# 
-# 
-# # Sample
-# sample.name.ext < #paste(file.DIR,args[3], sep="/") 
+# # 
+# # 
+# # # Sample
+# sample.name.ext < #paste(file.DIR,args[3], sep="/")
 # sample.name <- args[4]
+# 
+# # Which chroms
+# selectedChroms <- args[8]
 # 
 # # Coordinate tables
 # centromere.coord <- args[5]  # Table containing coordinates of centromeres
 # gaps.coord <- args[6]        # Table containing coordinates of gaps
 # more.gaps.coord <- args[7]   # Table containing coordinates of more gaps
-# 
+
 # # Out tables
 # sv.table.full <- paste(out.DIR, "/", paste("BD_raw_all_SV", sample.name, sep="_"), ".txt", sep="")        # Write to table containing all SVs in std chromosomes
-# freq.SV.out <- paste(out.DIR, "/", paste("BD_SV_frequency", sample.name, sep="_"), ".txt", sep="")        # Write to table contatining frequency of each SV type 
-# filtered.dels.out <- paste(out.DIR, "/", paste("BD_filtered_DEL", sample.name, sep="_"), ".txt", sep="")  # Write to table containing filtered deletions 
+# freq.SV.out <- paste(out.DIR, "/", paste("BD_SV_frequency", sample.name, sep="_"), ".txt", sep="")        # Write to table contatining frequency of each SV type
+# filtered.dels.out <- paste(out.DIR, "/", paste("BD_filtered_DEL", sample.name, sep="_"), ".txt", sep="")  # Write to table containing filtered deletions
 # sv.table.DEL <- paste(out.DIR, "/", paste("BD_raw_DEL", sample.name, sep="_"), ".txt", sep="")            # Write to table containing DELs in std chromosomes
 
-
-
-# DIRs
+# 
+# 
+# # DIRs
 file.DIR <- "/Users/bh10/Documents/Rotation3/data/genomestrip/"
 out.DIR <- "/Users/bh10/Documents/Rotation3/data/genomestrip/"
 
@@ -34,16 +37,19 @@ out.DIR <- "/Users/bh10/Documents/Rotation3/data/genomestrip/"
 sample.name.ext <- paste(file.DIR,"gs_cnv.reduced.genotypes.txt" , sep="/")
 sample.name <- "CNV"
 
+# Which chroms
+selectedChroms <- "autosomes"
+
 # Coordinate tables
 centromere.coord <- "/Users/bh10/Documents/Rotation3/data/hg38/centromere_GRCh38_combined.txt"  # Table containing coordinates of centromeres
 gaps.coord <- "/Users/bh10/Documents/Rotation3/data/hg38/gaps_GRCh38.txt"                       # Table containing coordinates of gaps
 more.gaps.coord <- "/Users/bh10/Documents/Rotation3/data/hg38/gaps_human.txt"                   # Table containing coordinates of more gaps
 
-
-# Out tables
+# 
+# # Out tables
 sv.table.full <- paste(out.DIR, "/", paste("GS_raw_all_SV", sample.name, sep="_"), ".txt", sep="")         # Write to table containing all SVs in std chromosomes
-freq.SV.out <- paste(out.DIR, "/", paste("GS_SV_frequency", sample.name, sep="_"), ".txt", sep="")         # Write to table contatining frequency of each SV type 
-filtered.dels.out <- paste(out.DIR, "/", paste("GS_filtered_DEL", sample.name, sep="_"), ".txt", sep="")   # write to table containing filtered deletions 
+freq.SV.out <- paste(out.DIR, "/", paste("GS_SV_frequency", sample.name, sep="_"), ".txt", sep="")         # Write to table contatining frequency of each SV type
+filtered.dels.out <- paste(out.DIR, "/", paste("GS_filtered_DEL", sample.name, sep="_"), ".txt", sep="")   # write to table containing filtered deletions
 sv.table.DEL <- paste(out.DIR, "/", paste("GS_raw_DEL", sample.name, sep="_"), ".txt", sep="")             # Write to table containing DELs in std chromosomes
 
 
@@ -82,7 +88,13 @@ df <- read.table(sample.name.ext, fill = TRUE, header=TRUE, check.names = FALSE)
 
 # Filter for Chr1-22,X,Y,M
 
-chroms <- paste("chr", c(1:22,"X","Y","M"), sep="")
+## Do we want to consider the sex chromosomes?
+if (selectedChroms == "autosomes") {
+  chroms <- paste("chr", c(1:22), sep="")
+} else {
+  chroms <- paste("chr", c(1:22,"X","Y","M"), sep="")
+}
+
 fdat <- NULL
 for (i in 1:length(chroms))  {
   print(c("filtering for chromosome", i))
@@ -140,9 +152,9 @@ write.table(freq.SV, freq.SV.out, quote=F, row.names=F,  sep="\t")
 
 
 
-
+sv.DEL$delLength <- sv.DEL$`[3]END`-sv.DEL$`[2]POS0`
 # edit chrs, so that chr1 -> 1, and chrY -> 24 and unnecessary columns are removed.
-edels <- edit.chr(sv.DEL[,c("[1]CHROM","[2]POS0", "[3]END", "[4]ID","[5]GCLENGTH" , "SVType", "freq")])
+edels <- edit.chr(sv.DEL[,c("[1]CHROM","[2]POS0", "[3]END", "[4]ID" ,"delLength","SVType", "freq")])
 
 
 
@@ -173,10 +185,10 @@ mgaps <- na.omit(edit.chr(fgaps)) # NAs introduced? It's because of non-standard
 ## Commence filtering    
 
 ## filter for deletion size
-summary(edels$X.5.GCLENGTH)
+summary(edels$delLength)
 # Min.  1st Qu.   Median     Mean  3rd Qu.     Max. 
 # -91109      439      633   349727     3781 78180680 
-indsize <- edels$X.5.GCLENGTH > 50 & edels$X.5.GCLENGTH < 1000000
+indsize <- edels$delLength > 50 & edels$delLength < 1000000
 print("deletion size filtering")
 summary(indsize)
 
@@ -218,7 +230,6 @@ indc <- apply(part.filt.dels[,1:3], 1, function(v) any(as.numeric(v[1])==as.nume
  
 filt.all <- !indga & !indgb & !indc 
 filtered.dels <- part.filt.dels[filt.all,]
-filtered.dels <- edels[filt.all,]
 
 filtered.dels$sample <- sample.name
 write.table(filtered.dels, filtered.dels.out, quote=F, row.names=F,  sep="\t")
