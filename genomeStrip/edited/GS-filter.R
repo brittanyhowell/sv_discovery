@@ -112,50 +112,53 @@ fdat$ref <- rowSums(fdat[, c(6:ncol(fdat))] == 2)
 fdat$DUPfreq <- rowSums(fdat[, c(6:ncol(fdat))] >= 2)
 
 
-# save the rows for which there is at least one zero (one DEL)
-sv.hom.DELfreq <- fdat[!(fdat$hom.DELfreq==0),]
-sv.het.DELfreq <- fdat[!(fdat$het.DELfreq==0),]
-sv.ref <- fdat[!(fdat$ref==0),]
-sv.DUPfreq <- fdat[!(fdat$DUPfreq==0),]
+# # save the rows for which there is at least one zero (one DEL)
+# sv.hom.DELfreq <- fdat[!(fdat$hom.DELfreq==0),]  
+# sv.het.DELfreq <- fdat[!(fdat$het.DELfreq==0),]
+# sv.ref <- fdat[!(fdat$ref==0),]
+# sv.DUPfreq <- fdat[!(fdat$DUPfreq==0),]
 
-# Add a column that is the "type" of SV
-sv.hom.DELfreq$SVType <- "homDEL"
-sv.het.DELfreq$SVType <- "hetDEL"
-sv.ref$SVType <- "ref"
-sv.DUPfreq$SVType <- "DUP"
+## Save rows eith either a homDEL or a hetDEL
+sv.DEL <- fdat[(any(fdat$hom.DELfreq!=0) | (fdat$het.DELfreq!=0)),]  
 
-# remove unnecessary count columns
-sv.hom.DELfreq <- subset(sv.hom.DELfreq, select= -c(het.DELfreq, ref, DUPfreq))
-sv.het.DELfreq <- subset(sv.het.DELfreq, select= -c(hom.DELfreq, ref, DUPfreq))
-sv.ref <- subset(sv.ref, select= -c(hom.DELfreq,het.DELfreq, DUPfreq))
-sv.DUPfreq <- subset(sv.DUPfreq, select= -c(hom.DELfreq , het.DELfreq, ref))
+# # Add a column that is the "type" of SV
+# sv.hom.DELfreq$SVType <- "homDEL"
+# sv.het.DELfreq$SVType <- "hetDEL"
+# sv.ref$SVType <- "ref"
+# sv.DUPfreq$SVType <- "DUP"
+
+# # remove unnecessary count columns
+# sv.hom.DELfreq <- subset(sv.hom.DELfreq, select= -c(het.DELfreq, ref, DUPfreq))
+# sv.het.DELfreq <- subset(sv.het.DELfreq, select= -c(hom.DELfreq, ref, DUPfreq))
+# sv.ref <- subset(sv.ref, select= -c(hom.DELfreq,het.DELfreq, DUPfreq))
+# sv.DUPfreq <- subset(sv.DUPfreq, select= -c(hom.DELfreq , het.DELfreq, ref))
 
 
-## rename specific frequency column to the word "freq"
-sv.hom.DELfreq <- rename(sv.hom.DELfreq, c("hom.DELfreq"="freq"))
-sv.het.DELfreq <- rename(sv.het.DELfreq, c("het.DELfreq"="freq") )
-sv.ref  <-  rename(sv.ref, c("ref"="freq") )
-sv.DUPfreq <-  rename(sv.DUPfreq, c("DUPfreq"="freq") )
+# ## rename specific frequency column to the word "freq"
+# sv.hom.DELfreq <- rename(sv.hom.DELfreq, c("hom.DELfreq"="freq"))
+# sv.het.DELfreq <- rename(sv.het.DELfreq, c("het.DELfreq"="freq") )
+# sv.ref  <-  rename(sv.ref, c("ref"="freq") )
+# sv.DUPfreq <-  rename(sv.DUPfreq, c("DUPfreq"="freq") )
 
-## Combine tables
-sv.DEL <- rbind(sv.hom.DELfreq, sv.het.DELfreq)
-sv.all <- rbind(sv.hom.DELfreq, sv.het.DELfreq, sv.ref, sv.DUPfreq) # In case this is ever wanted...
+# ## Combine tables
+# sv.DEL <- rbind(sv.hom.DELfreq, sv.het.DELfreq)
+# sv.all <- rbind(sv.hom.DELfreq, sv.het.DELfreq, sv.ref, sv.DUPfreq) # In case this is ever wanted...
 
 write.table(sv.DEL, sv.table.DEL, quote=F, row.names=F,  sep="\t") 
 
-# Report the number of each kind of SV
-freq.SV <- as.data.frame(table(sv.all[,"SVType"]))
-colnames(freq.SV) <- c("SVType", "frequency")
-
-write.table(freq.SV, freq.SV.out, quote=F, row.names=F,  sep="\t")
-## 
+# # Report the number of each kind of SV
+# freq.SV <- as.data.frame(table(sv.all[,"SVType"]))
+# colnames(freq.SV) <- c("SVType", "frequency")
+# 
+# write.table(freq.SV, freq.SV.out, quote=F, row.names=F,  sep="\t")
+# ## 
 
 
 
 sv.DEL$delLength <- sv.DEL$`[3]END`-sv.DEL$`[2]POS0`
 # edit chrs, so that chr1 -> 1, and chrY -> 24 and unnecessary columns are removed.
-edels <- edit.chr(sv.DEL[,c("[1]CHROM","[2]POS0", "[3]END", "[4]ID" ,"delLength","SVType", "freq")])
-
+# edels <- edit.chr(sv.DEL[,c("[1]CHROM","[2]POS0", "[3]END", "[4]ID" ,"delLength","SVType", "freq")])
+edels <- edit.chr(sv.DEL)
 
 
 ##########
