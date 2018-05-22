@@ -1,8 +1,8 @@
 
 
-geneDIR <- "/lustre/scratch115/projects/interval_wgs/analysis/sv/geneIntersect/GS-geno/"
+geneDIR <- "/lustre/scratch115/projects/interval_wgs/analysis/sv/geneIntersect/BD_subset/"
 # geneDIR <- "~/Documents/Rotation3/data/gene_intersect/"
-outTable <- "/lustre/scratch115/projects/interval_wgs/analysis/sv/geneIntersect/GS-geno-merge/GS_geno_merge.txt"
+outTable <- "/lustre/scratch115/projects/interval_wgs/analysis/sv/geneIntersect/merge/BD_merge.txt"
 
 
 
