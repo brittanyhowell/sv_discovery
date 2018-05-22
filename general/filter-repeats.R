@@ -1,13 +1,21 @@
-repeats.coord <- "/Users/bh10/Documents/Rotation3/data/hg38/ucsc_repeats_GRCh38.txt.gz"         # Table containing coordinate of all repeats
+args = commandArgs(TRUE)
+
+# repeats.coord <- "/Users/bh10/Documents/Rotation3/data/hg38/ucsc_repeats_GRCh38.txt.gz"         # Table containing coordinate of all repeats
+repeats.coord <- args[1]
 
 # DIRs
-file.DIR <- "/Users/bh10/Documents/Rotation3/data/genomestrip/"
-out.DIR <- "/Users/bh10/Documents/Rotation3/data/genomestrip/"
+# file.DIR <- "/Users/bh10/Documents/Rotation3/data/genomestrip/"
+# out.DIR <- "/Users/bh10/Documents/Rotation3/data/genomestrip/"
 
+file.DIR <- args[2]
+out.DIR <- args[3]
 
 # Sample
-sample.name.ext <- paste(file.DIR,"gs_cnv.reduced.genotypes.txt" , sep="/")
-sample.name <- "CNV"
+sample.name.ext <- paste(file.DIR, args[4] , sep="/")
+sample.name <- args[5]
+
+# Filtered table
+filtered.dels.out <- args[6]
 
 
 
@@ -50,6 +58,12 @@ full.repeats <- read.table(repeats.coord, header = F)
 repeats <- full.repeats[,c(6:8, 10:13)]
 colnames(repeats) <- c("chr", "start", "end", "strand", "repName", "repClass", "repFamily")
 rep <- na.omit(edit.chr(repeats[1:3]))
+rep <- reassignrep
+
+
+
+
+
 
 sv.table <- fdat
   
@@ -62,3 +76,10 @@ sv.table <- fdat
 indr <- apply(sv.table[,1:3], 1, function(v)   any(as.numeric(v[1])==as.numeric(rep[,1]) &  ((as.numeric(v[2])>=(as.numeric(rep[,2])) & (as.numeric(v[2])+100)<=(as.numeric(rep[,3]))) |   (as.numeric(v[3])>=(as.numeric(rep[,2])) & (as.numeric(v[3])+100)<=(as.numeric(rep[,3])))))) 
 
 
+
+
+filtered.dels <- sv.table[!indr,]
+
+write.table(filtered.dels, filtered.dels.out, quote=F, row.names=F,  sep="\t")
+
+print("complete :) ")
