@@ -51,7 +51,7 @@ repeats <- full.repeats[,c(6:8, 10:13)]
 colnames(repeats) <- c("chr", "start", "end", "strand", "repName", "repClass", "repFamily")
 rep <- na.omit(edit.chr(repeats[1:3]))
 
-sv.table <- 
+sv.table <- fdat
   
   
   
@@ -59,6 +59,6 @@ sv.table <-
 # Columns in sv.table neeed to be: 
 # Col1: chr, col 2: start, Col 3: end.
 
-indr <- apply(sv.table[,1:3], 1, function(v)   any(as.numeric(v[1])==as.numeric(rep[,1]) &  ((as.numeric(v[2])>=(as.numeric(rep[,2])-1000) & (as.numeric(v[2])+100)<=(as.numeric(rep[,3])+1000)) |   (as.numeric(v[3])>=(as.numeric(rep[,2])-1000) & (as.numeric(v[3])+100)<=(as.numeric(rep[,3])+1000))))) 
+indr <- apply(sv.table[,1:3], 1, function(v)   any(as.numeric(v[1])==as.numeric(rep[,1]) &  ((as.numeric(v[2])>=(as.numeric(rep[,2])) & (as.numeric(v[2])+100)<=(as.numeric(rep[,3]))) |   (as.numeric(v[3])>=(as.numeric(rep[,2])) & (as.numeric(v[3])+100)<=(as.numeric(rep[,3])))))) 
 
 
