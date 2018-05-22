@@ -1,8 +1,8 @@
 
 
-geneDIR <- "/lustre/scratch115/projects/interval_wgs/analysis/sv/geneIntersect/BD"
+geneDIR <- "/lustre/scratch115/projects/interval_wgs/analysis/sv/geneIntersect/GS-geno/"
 # geneDIR <- "~/Documents/Rotation3/data/gene_intersect/"
-outTable <- "/lustre/scratch115/projects/interval_wgs/analysis/sv/geneIntersect/BD-merge/merge.txt"
+outTable <- "/lustre/scratch115/projects/interval_wgs/analysis/sv/geneIntersect/GS-geno-merge/GS_geno_merge.txt"
 
 
 
@@ -14,7 +14,8 @@ totGenes <- NULL
 for( i in 1:length(genefiles) ){
   
   file <- genefiles[i]
-  nameFile <- gsub("_geneList.txt","",file)
+  nameFile.part <- gsub("_geneList.txt","",file)
+  nameFile <- gsub("CNV_", "",nameFile.part)
   
   geneLoc <- paste(geneDIR,file, sep="/")
   genetable <- read.table(geneLoc)
