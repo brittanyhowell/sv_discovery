@@ -2,6 +2,7 @@ package main
 
 import (
 	"bufio"
+	"flag"
 	"fmt"
 	"log"
 	"os"
@@ -19,13 +20,12 @@ type genes struct {
 	chr   int
 	start int
 	end   int
-	name  string
 }
 
 var (
-	a        genes
-	b        dels
-	delCount int
+	a     genes
+	b     dels
+	count int
 
 	currentChrom int
 	pA           float32
@@ -38,33 +38,36 @@ var (
 )
 
 func main() {
-	// flag.StringVar(&oneIn, "oneIn", "", "Input gene list")
-	// flag.StringVar(&twoIn, "twoIn", "", "input deletion list")
-	// flag.StringVar(&outPath, "outPath", "", "Output file path")
-	// // flag.StringVar(&SJMap3, "SJMap3", "", "gene (expanded) file")
-	// flag.StringVar(&out, "out", "", "gene (summary) file")
-	// flag.Parse()
+	flag.StringVar(&oneIn, "oneIn", "", "Input gene list")
+	flag.StringVar(&twoIn, "twoIn", "", "input deletion list")
+	flag.StringVar(&outPath, "outPath", "", "Output file path")
+	// flag.StringVar(&SJMap3, "SJMap3", "", "gene (expanded) file")
+	flag.StringVar(&out, "out", "intersect.out", "gene (summary) file")
+	flag.Parse()
 
-	// fA, err := os.Open(oneIn)
-	fA, err := os.Open("testA")
+	fA, err := os.Open(oneIn)
+	// fA, err := os.Open("testA")
 	if err != nil {
 		log.Fatal(err)
 	}
 	defer fA.Close()
 
 	var aAll []string
-
+	i := 0
 	sA := bufio.NewScanner(fA)
 	for sA.Scan() {
-		aAll = append(aAll, sA.Text())
+		if i > 0 { // IMPORTANT - ASSUMES THERE IS A HEADER, ELSE IT WILL SKIP THE FIRST DEL
+			aAll = append(aAll, sA.Text())
+		}
+		i++
 	}
 
 	if err := sA.Err(); err != nil {
 		log.Fatal(err)
 	}
 
-	// fB, err := os.Open(twoIn)
-	fB, err := os.Open("testB")
+	fB, err := os.Open(twoIn)
+	// fB, err := os.Open("testB")
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -73,20 +76,20 @@ func main() {
 	var bAll []string
 
 	sB := bufio.NewScanner(fB)
-	// i := 0
+	i = 0
 	for sB.Scan() {
-		// if i > 0 { // IMPORTANT - ASSUMES THERE IS A HEADER, ELSE IT WILL SKIP THE FIRST DEL
-		bAll = append(bAll, sB.Text())
-		// }
-		// i++
+		if i > 0 { // IMPORTANT - ASSUMES THERE IS A HEADER, ELSE IT WILL SKIP THE FIRST DEL
+			bAll = append(bAll, sB.Text())
+		}
+		i++
 	}
 
 	if err := sB.Err(); err != nil {
 		log.Fatal(err)
 	}
 
-	// sumOut := fmt.Sprintf("%v%v", outPath, out)
-	sumOut := "intersect.out"
+	sumOut := fmt.Sprintf("%v%v", outPath, out)
+	// sumOut := "intersect.out"
 	gsOut, err := os.Create(sumOut)
 	if err != nil {
 		log.Fatalf("failed to create output %s: %v", sumOut, err)
@@ -97,7 +100,6 @@ func main() {
 
 	for _, rA := range aAll {
 		// make count of dels 0, before searching dels for a match
-		delCount = 0
 
 		gspl := strings.Split(rA, "\t")
 
@@ -110,19 +112,19 @@ func main() {
 		gei := int(gef)
 
 		// gname := gspl[3]
-		gname := "name"
 
 		a = genes{
 			chr:   gci,
 			start: gsi,
 			end:   gei,
-			name:  gname,
 		}
 		// fmt.Println("Gene for comparison:", a.chr, a.start, a.end, a.name)
 
 		if currentChrom != a.chr {
+			fmt.Println("Total ", count, "intersects in chromosome", currentChrom)
 			fmt.Println("working on chromosome: ", a.chr)
 		}
+		count = 0
 		currentChrom = a.chr
 
 		for _, rB := range bAll {
@@ -147,11 +149,8 @@ func main() {
 				continue
 			}
 			if a.start <= b.end && a.end >= b.start {
-				// If there is an intersect
-				delCount++
 
 				delType := characteriseInt(a.start, a.end, b.start, b.end)
-				fmt.Println("Intersect: ", delType)
 
 				switch delType {
 				case "aOver":
@@ -164,7 +163,6 @@ func main() {
 					pA, pB = calcRightSpill(b.end, b.start, a.end, a.start)
 				}
 
-				fmt.Println("p: ", pA, pB)
 				if pA >= 0.8 && pB >= 0.8 {
 
 					fmt.Fprintf(gsOut, "%v\t%v\t%v\t%v\t%v\t%v\t%v\t%v\t\n",
@@ -177,6 +175,7 @@ func main() {
 						b.end,
 						pB,
 					)
+					count++
 				}
 
 			}
@@ -224,9 +223,9 @@ func calcLeftSpill(dend, dstart, gend, gstart int) (pA, pB float32) {
 }
 
 func calc_aOver(dend, dstart, gend, gstart int) (pA, pB float32) {
-	oLen := bLen
 	aLen := a.end - a.start
 	bLen := b.end - b.start
+	oLen := bLen
 
 	pA = float32(oLen) / float32(aLen)
 	pB = float32(oLen) / float32(bLen)
@@ -234,9 +233,9 @@ func calc_aOver(dend, dstart, gend, gstart int) (pA, pB float32) {
 }
 
 func calc_bOver(dend, dstart, gend, gstart int) (pA, pB float32) {
-	oLen := aLen
 	bLen := b.end - b.start
 	aLen := a.end - a.start
+	oLen := aLen
 
 	pA = float32(oLen) / float32(aLen)
 	pB = float32(oLen) / float32(bLen)
