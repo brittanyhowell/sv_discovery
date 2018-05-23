@@ -1,4 +1,4 @@
-
+args = commandArgs(TRUE)
 
 outTable <- "/lustre/scratch115/projects/interval_wgs/analysis/sv/association/association_coefficients_CNV.txt"
 
