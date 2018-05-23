@@ -1,10 +1,10 @@
 
+## Samples: Get the Phenotypes File, and - awk '{print $1}' FBC_223-samples.txt or whatever it is. 
+samples <- read.table("/nfs/team151/bh10/scripts/bh10_general/fileLists/223Samples.list", as.is = TRUE)
+cnv.table <-  read.table(file = "/lustre/scratch115/projects/interval_wgs/analysis/sv/geneIntersect/merged/GS_geno_merge.txt", header = T)
 
-samples <- read.table("/Users/bh10/Documents/Rotation3/data/phenotypes/223Samples.list", as.is = TRUE)
-cnv.table <-  read.table(file = "geneIntersect/tiny_geno_merge.txt", header = T)
 
-outTable <- "/Users/bh10/Documents/Rotation3/data/geneIntersect/small-merged-GS-CNV-ordered.txt"
-
+outTable <- args[1]
 
 
 

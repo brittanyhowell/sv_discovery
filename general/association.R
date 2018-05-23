@@ -1,18 +1,17 @@
-setwd("~/Documents/Rotation3/data/")
 
-outTable <- "phenotypes/association_coefficients_CNV.txt"
+
+outTable <- "/lustre/scratch115/projects/interval_wgs/analysis/sv/association/association_coefficients_CNV.txt"
 
 ## read in phenotype table
-pheno <- read.table("phenotypes/FBC_223-samples.txt", header = TRUE)
+pheno <- read.table("/lustre/scratch115/projects/interval_wgs/analysis/phenotypes/FBC_223-samples.txt", header = TRUE)
+phenCols <- colnames(pheno)
 rownames(pheno) <- pheno$ID
 pheno <- subset(pheno, select=-ID)
 
-onepheno <-subset(pheno, select = 1)
-
-
+cnv.file <- args[1]
 
 # Read in reordered table
-cnv.table <- read.table(file = "/Users/bh10/Documents/Rotation3/data/geneIntersect/small-merged-GS-CNV-ordered.txt", header = T)
+cnv.table <- read.table(file = cnv.file, header = T)
 rownames(cnv.table) <- cnv.table$Exon
 cnv.table <- subset(cnv.table, select=-Exon)
 
@@ -25,12 +24,11 @@ oneSample <- as.integer(cnv.table[1,])
 # for (i in 1:nrow(cnv.table)){ lm function, rbind to df. }
 
 
-df <-  apply(cnv.table,1,function(j) coefficients <-  t(apply(pheno, 2, function(x)  summary(lm(as.integer((j)) ~ x))$coefficients[2,1] )) )
+coef <-  as.data.frame(apply(cnv.table,1,function(j) coefficients <-  t(apply(pheno, 2, function(x)  summary(lm(as.integer((j)) ~ x))$coefficients[2,1] )) ))
+
+coef <- cbind(phenCols,coef)
 
 # rbind(coef, coefficients)
 
 
-# write.table(coef, outTable) 
-
-
-
+ write.table(coef, outTable, quote=F, row.names=F,  sep="\t")
