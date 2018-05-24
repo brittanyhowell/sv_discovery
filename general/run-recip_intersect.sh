@@ -8,10 +8,10 @@ scriptDIR=/nfs/team151/bh10/scripts/bh10_general/
 
 
 fileA="/lustre/scratch115/projects/interval_wgs/analysis/sv/genomestrip/filtered_sv/GS_filtered_DEL_CNV_no_genotype_info.txt" 
-fileA_type="GS_CNV"
+fileA_type="GS_disc"
 fileB="/lustre/scratch115/projects/interval_wgs/analysis/sv/breakdancer/filtered/WG_3642_XY/BD_filtered_DEL_224_sorted.txt"
 fileB_type="BD"
-outDIR="/lustre/scratch115/projects/interval_wgs/analysis/sv/intersects"
+outDIR="/lustre/scratch115/projects/interval_wgs/analysis/sv/intersects/"
 out="intersect_${fileA_type}_${fileB_type}.txt"
 
 
