@@ -122,9 +122,10 @@ func main() {
 
 		if currentChrom != a.chr {
 			fmt.Println("Total ", count, "intersects in chromosome", currentChrom)
+			count = 0
 			fmt.Println("working on chromosome: ", a.chr)
 		}
-		count = 0
+
 		currentChrom = a.chr
 
 		for _, rB := range bAll {
@@ -163,7 +164,7 @@ func main() {
 					pA, pB = calcRightSpill(b.end, b.start, a.end, a.start)
 				}
 
-				if pA >= 0.8 && pB >= 0.8 {
+				if pA >= 0.7 && pB >= 0.8 {
 
 					fmt.Fprintf(gsOut, "%v\t%v\t%v\t%v\t%v\t%v\t%v\t%v\t\n",
 						a.chr,
