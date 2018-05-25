@@ -58,7 +58,7 @@ full.repeats <- read.table(repeats.coord, header = F)
 repeats <- full.repeats[,c(6:8, 10:13)]
 colnames(repeats) <- c("chr", "start", "end", "strand", "repName", "repClass", "repFamily")
 rep <- na.omit(edit.chr(repeats[1:3]))
-rep <- reassignrep
+
 
 
 
@@ -75,6 +75,7 @@ sv.table <- fdat
 
 indr <- apply(sv.table[,1:3], 1, function(v)   any(as.numeric(v[1])==as.numeric(rep[,1]) &  ((as.numeric(v[2])>=(as.numeric(rep[,2])) & (as.numeric(v[2])+100)<=(as.numeric(rep[,3]))) |   (as.numeric(v[3])>=(as.numeric(rep[,2])) & (as.numeric(v[3])+100)<=(as.numeric(rep[,3])))))) 
 
+print(summary(indr))
 
 
 
