@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# bsub  -o /nfs/team151/bh10/scripts/bh10_general/output/associate_CNV-%J.out -e /nfs/team151/bh10/scripts/bh10_general/output/associate_CNV-%J.err -R"select[mem>1000] rusage[mem=1000]" -M1000 /nfs/team151/bh10/scripts/bh10_general/run-association_CNV.sh
+# bsub -q long -o /nfs/team151/bh10/scripts/bh10_general/output/associate_CNV-%J.out -e /nfs/team151/bh10/scripts/bh10_general/output/associate_CNV-%J.err -R"select[mem>2000] rusage[mem=2000]" -M2000 /nfs/team151/bh10/scripts/bh10_general/run-association_CNV.sh
 
 echo "commence"
 scriptDIR=/nfs/team151/bh10/scripts/bh10_general/
