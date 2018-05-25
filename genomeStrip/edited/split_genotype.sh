@@ -21,6 +21,7 @@ for (( i = 6; i < ${numCol}; i++ )); do
 	awk '{if ($4==0 || $4==1 ) print $0}'  tempName-${i}.txt >  body-temp-${i}.txt
 	cat head.txt body-temp-${i}.txt > GS_filtered_DEL_CNV_${filename}.txt 
 
+	rm head.txt
 	rm tempName-${i}.txt
 	rm body-temp-${i}.txt
 done
