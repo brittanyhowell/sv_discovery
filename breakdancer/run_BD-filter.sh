@@ -6,7 +6,7 @@
 ## Required files: list of filenames with extension ".out"
 ## Adjust DIRs as needed
 
-# bsub -J "BD-filter[1-3642]" -o /nfs/team151/bh10/scripts/breakdancer_bh10/output/BD-analyse/BD-analyse-%J-%I.out -e /nfs/team151/bh10/scripts/breakdancer_bh10/output/BD-analyse/BD-analyse-%J-%I.err -R"select[mem>1000] rusage[mem=1000]" -M1000 /nfs/team151/bh10/scripts/breakdancer_bh10/run_BD_analyse.sh
+# bsub -J "BD-filter[1-3642]" -o /nfs/team151/bh10/scripts/breakdancer_bh10/output/BD-analyse/BD-analyse-%J-%I.out -e /nfs/team151/bh10/scripts/breakdancer_bh10/output/BD-analyse/BD-analyse-%J-%I.err -R"select[mem>1000] rusage[mem=1000]" -M1000 /nfs/team151/bh10/scripts/breakdancer_bh10/run-BD_filter.sh
 
 echo "commence"
 scriptDIR=/nfs/team151/bh10/scripts/breakdancer_bh10/
@@ -24,9 +24,9 @@ scriptDIR=/nfs/team151/bh10/scripts/breakdancer_bh10/
 
 ## DIRs
 # BD output file DIR
-filDIR=/lustre/scratch115/projects/interval_wgs/analysis/sv/breakdancer/out/WG_3724/
+filDIR=/lustre/scratch115/projects/interval_wgs/analysis/sv/breakdancer/out/WG_224/
 # Where the output tables will go
-outDIR=/lustre/scratch115/projects/interval_wgs/analysis/sv/breakdancer/filtered/WG_3642/
+outDIR=/lustre/scratch115/projects/interval_wgs/analysis/sv/breakdancer/filtered/WG_224/
 
 ## Samples
 fileList="/nfs/team151/bh10/scripts/breakdancer_bh10/fileLists/3642_WG_BD_out.list"
