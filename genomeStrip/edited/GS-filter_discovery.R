@@ -98,8 +98,6 @@ library("plyr")
 
 # Read in samples 
 df <- read.table(sample.name.ext, fill = TRUE, header=TRUE, check.names = FALSE)
-tail <- read.table("~/Documents/Rotations/Rotation3/data/genomestrip/discovery/tail")
-head <- read.table("~/Documents/Rotations/Rotation3/data/genomestrip/discovery/head")
   
 # Filter for Chr1-22,X,Y,M
 

@@ -13,3 +13,6 @@ echo "running prep"
 
 echo "running association"
 /software/R-3.4.0/bin/Rscript ${scriptDIR}/association_CNV.R ${reorderedTable}
+
+
+# Job <1087811> is submitted to queue <long>.

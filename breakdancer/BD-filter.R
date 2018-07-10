@@ -141,7 +141,7 @@ summary(indin)
 round(summary(edels[,6]))
 #  Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
 #   2       3       6       8       9     1809 
-indrp <- edels[,6] < 20 
+indrp <- edels[,6] < 35
 print("read pair filtering:")
 summary(indrp)
 
@@ -153,16 +153,20 @@ part.filt.dels <- edels[which(indsize &  indin & indrp),] #indrd &
 # Filter for location based features
 
 # Gaps - first one
-    indg <- apply(part.filt.dels[,1:3], 1, function(v) any(as.numeric(v[1])==as.numeric(gaps[,1]) & ((as.numeric(v[2])>=(as.numeric(gaps[,2])-50) & (as.numeric(v[2])+100)<=(as.numeric(gaps[,3])+50)) |  (as.numeric(v[3])>=(as.numeric(gaps[,2])-50) & (as.numeric(v[3])+100)<=(as.numeric(gaps[,3])+50))))) 
+    indga <- apply(part.filt.dels[,1:3], 1, function(v) any(as.numeric(v[1])==as.numeric(gaps[,1]) & ((as.numeric(v[2])>=(as.numeric(gaps[,2])-50) & (as.numeric(v[2])+100)<=(as.numeric(gaps[,3])+50)) |  (as.numeric(v[3])>=(as.numeric(gaps[,2])-50) & (as.numeric(v[3])+100)<=(as.numeric(gaps[,3])+50))))) 
+  summary(indga)  
+    
     
 # Gaps - second one
-    indg <- apply(part.filt.dels[,1:3], 1, function(v) any(as.numeric(v[1])==as.numeric(mgaps[,1]) &  ((as.numeric(v[2])>=(as.numeric(mgaps[,2])-1000) & (as.numeric(v[2])+100)<=(as.numeric(mgaps[,3])+1000)) | (as.numeric(v[3])>=(as.numeric(mgaps[,2])-1000) & (as.numeric(v[3])+100)<=(as.numeric(mgaps[,3])+1000)))))
+    indgb <- apply(part.filt.dels[,1:3], 1, function(v) any(as.numeric(v[1])==as.numeric(mgaps[,1]) &  ((as.numeric(v[2])>=(as.numeric(mgaps[,2])-50) & (as.numeric(v[2])+100)<=(as.numeric(mgaps[,3])+50)) | (as.numeric(v[3])>=(as.numeric(mgaps[,2])-50) & (as.numeric(v[3])+100)<=(as.numeric(mgaps[,3])+50)))))
+summary(indgb)
 
 # Centromeres
     indc <- apply(part.filt.dels[,1:3], 1, function(v) any(as.numeric(v[1])==as.numeric(centro[,1]) &  ((as.numeric(v[2])>=(as.numeric(centro[,2])-1000) & (as.numeric(v[2])+100)<=(as.numeric(centro[,3])+1000)) |  (as.numeric(v[3])>=(as.numeric(centro[,2])-1000) & (as.numeric(v[3])+100)<=(as.numeric(centro[,3])+1000)))))
-
+    summary(indc)
+    
 # Combine three sets of 
-filt.all <- !indc & !indg & !indc
+filt.all <- !indga & !indgb & !indc
 filtered.dels <- part.filt.dels[filt.all,]
 
 filtered.dels$sample <- sample.name

@@ -39,10 +39,10 @@ edit.chr <- function(mat, chrn=1, posn=2, ord=TRUE)  {
 
 # Read in samples 
 df <- read.table(sample.name.ext, fill = TRUE, header=TRUE, check.names = FALSE)
-
+# df <- read.table("~/Documents/Rotation3/data/genomestrip/GS_filtered_DEL_disc.txt", fill = TRUE, header=TRUE, check.names = FALSE)
 # Filter for Chr1-22,X,Y,M
 
-chroms <- paste("chr", c(1:22,"X","Y","M"), sep="")
+chroms <-  c(1:22,"X","Y","M")
 fdat <- NULL
 for (i in 1:length(chroms))  {
   print(c("filtering for chromosome", i))
@@ -84,3 +84,7 @@ filtered.dels <- sv.table[!indr,]
 write.table(filtered.dels, filtered.dels.out, quote=F, row.names=F,  sep="\t")
 
 print("complete :) ")
+
+
+
+

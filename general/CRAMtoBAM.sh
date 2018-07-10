@@ -5,13 +5,13 @@
 
 
 
-# bsub -J "cramArray[1-3724]" -o /nfs/team151/bh10/scripts/bh10_general/output/CRAMtoBAM/CRAM-to-BAM-%J-%I.out -e /nfs/team151/bh10/scripts/bh10_general/output/CRAMtoBAM/CRAM-to-BAM-%J-%I.err /nfs/team151/bh10/scripts/bh10_general/CRAMtoBAM.sh
+# bsub -J "cramArray[1-10]" -o /nfs/team151/bh10/scripts/bh10_general/output/CRAMtoBAM/CRAM-to-BAM-%J-%I.out -e /nfs/team151/bh10/scripts/bh10_general/output/CRAMtoBAM/CRAM-to-BAM-%J-%I.err /nfs/team151/bh10/scripts/bh10_general/CRAMtoBAM.sh
 
 
 
 ref=/lustre/scratch115/resources/ref/Homo_sapiens/HS38DH/hs38DH.fa
 wDIR=/lustre/scratch115/projects/interval_wgs/crams/
-oDIR=/lustre/scratch115/projects/interval_wgs/WGbams/
+oDIR=/lustre/scratch115/projects/interval_wgs/testBams/
 
 
 # ## Check that oDIR exists, if not, create. 
@@ -38,7 +38,7 @@ oDIR=/lustre/scratch115/projects/interval_wgs/WGbams/
 
 
 # Get files with only names
-fcramFile=/nfs/team151/bh10/scripts/bh10_general/fileLists/WG_crams.list
+fcramFile=/nfs/team151/bh10/scripts/bh10_general/fileLists/WG_crams_10.list
 cramFile=($(<"${fcramFile}"))
 CRAM="${cramFile[$((LSB_JOBINDEX-1))]}" 
 
@@ -53,9 +53,3 @@ oFile=${oDIR}/${filename}.bam
 samtools view ${cramLine} -T ${ref} -b > ${oFile}
 
 echo "complete"
-
-
-
-
-
-

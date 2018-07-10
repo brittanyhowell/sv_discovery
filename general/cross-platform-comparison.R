@@ -1,4 +1,4 @@
-setwd("~/Documents/Rotation3/data/geneIntersect/")
+setwd("~/Documents/Rotations/Rotation3/data/geneIntersect/")
 
 
 library(ComplexHeatmap)
@@ -44,7 +44,7 @@ library(pheatmap)
 # pheatmap(nonzero.del.table, show_rownames = F)
 
 
-Table <- read.table("/Users/bh10/Documents/Rotation3/data/comparePlatforms/sum_intersect_BD_CNV.txt", header = T)
+Table <- read.table("/Users/bh10/Documents/Rotations/Rotation3/data/comparePlatforms/sum_intersect_BD_CNV.txt", header = T)
 intersectTable <- subset(Table, select = c(sample, rawBD, rawGS, intersect))
 colnames(intersectTable) <- c("sample","Breakdancer", "CNV_Genomestrip", "Intersection")
 library(reshape2)
@@ -81,22 +81,32 @@ combine.genes <- list(CNV = CNV.names, GS = GS.names, BD = BD.names)
 
 library (UpSetR)
 
-pdf("~/Documents/Rotation3/data/comparePlatforms/gene_intersect.pdf", width = 5, height = 5)
+pdf("~/Documents/Rotation3/Report/figs/gene_intersect.pdf", width = 5, height = 5, onefile = FALSE)
 upset(fromList(combine.genes), order.by = "freq" ,text.scale = c(1.3, 1.3, 1, 1, 1.8, 1.3))
 graphics.off()
 
 
 
 
-## 
-df.226 <-  read.table("/Users/bh10/Documents/Rotation3/data/BD/filtered/BD_filtered_DEL_224_sorted.txt", header = TRUE)
+## BD analysis
+df.226 <-  read.table("/Users/bh10/Documents/Rotations/Rotation3/data/BD/filtered/BD_filtered_DEL_224_sorted.txt", header = TRUE)
 df.226 <- df.226[,c(1:4,9)]
 colnames(df.226) <- c("chr", "start", "end", "length", "sample" )
 df.226$chr <-  factor(df.226$chr, levels= c(1:24))
 
+
+EGAN00001361688 <- df.226[which(df.226$sample=="EGAN00001361688" | df.226$sample=="EGAN00001344763"),]
+ggplot()+
+  geom_density(data =EGAN00001361688,  alpha=0.50, aes(x=length), fill = "magenta") + 
+  scale_x_continuous(limits = c( 50000,2500000)) + 
+  geom_density(data = df.226, alpha=0.50, aes(x = length), fill = "blue") +
+  theme_bw() 
+
+
+
 # Per chromosome
 pdf("~/Documents/Rotation3/data/comparePlatforms/BD_length_chr.pdf", width = 8, height = 5)
-ggplot(df.226, aes(x=length, fill=chr))+
+ggplot(EGAN00001361688, aes(x=length, fill=chr))+
   geom_density(alpha=0.80) + 
   scale_x_continuous(limits = c( 000,10000)) + 
   geom_density(alpha=0.90, fill = "white") +
@@ -178,15 +188,18 @@ graphics.off()
 
 
 ## read
-cnv.226 <-  read.table("/Users/bh10/Documents/Rotation3/data/genomestrip/GS_filtered_DEL_CNV_no_genotype_info.txt", header = TRUE)
-colnames(cnv.226) <- c("chr", "start", "end", "name", "length", "DELtype","DELfreq", "sample")
+#cnv.226 <-  read.table("/Users/bh10/Documents/Rotation3/data/genomestrip/GS_filtered_DEL_CNV_no_genotype_info.txt", header = TRUE)
+cnv.226 <-  read.table("/Users/bh10/Documents/Rotation3/data/genomestrip/GS_filtered_DEL_CNV.txt", header = TRUE)
+cnv.226 <- subset(cnv.226, select = c("X.1.CHROM","X.2.POS0","X.3.END","X.4.ID","X.5.GCLENGTH", "hom.DELfreq" ,"het.DELfreq", "sample" ))
+colnames(cnv.226) <- c("chr", "start", "end", "name", "length", "homfreq","hetfreq", "sample")
 cnv.226$chr <-  factor(cnv.226$chr, levels= c(1:24))
 
 
-gs.dels <- cnv.226[!(cnv.226$DELfreq==0),]
 
 # one line per record - factors in duplications
-cnv.226.expanded <- cnv.226[rep(row.names(cnv.226), cnv.226$DELfreq), 1:8]
+cnv.226.expanded <- cnv.226[rep(row.names(cnv.226), cnv.226$homfreq+cnv.226$hetfreq), 1:8]
+
+
 
 
 
@@ -204,9 +217,10 @@ graphics.off()
 
 # Per chromosome, zoom
 pdf("~/Documents/Rotation3/data/comparePlatforms/CNV_length_chr_zoom.pdf", width = 8, height = 5)
-ggplot(cnv.226.expanded, aes(x=length, fill=chr, col))+
+ggplot(cnv.226.expanded, aes(x=length, fill=chr))+
   geom_density(alpha=0.40) + 
   scale_x_continuous(limits = c( 1000,6000)) + 
+  geom_density(alpha=0.80, fill = "white") +
   theme_bw()
 graphics.off()
 
@@ -338,9 +352,9 @@ graphics.off()
 ## Length distributions ALL
 
 
-gs.226$software <- "Genomestrip-GS"
-cnv.226.expanded$software <- "Genomestrip-CNV"
-df.226$software <- "Breakdancer"
+gs.226$software <- "GS"
+cnv.226.expanded$software <- "CNV"
+df.226$software <- "BD"
 
 gs.red <- subset(gs.226, select=c(length,software))
 cnv.red <- subset(cnv.226.expanded, select=c(length,software))
@@ -348,11 +362,99 @@ df.red <- subset(df.226, select=c(length,software))
 
 tot.226 <- rbind(gs.red, cnv.red, df.red)
 
-pdf("~/Documents/Rotation3/data/comparePlatforms/All_length_box.pdf", width = 8, height = 5)
-ggplot(tot.226,aes(x=software, y=length)) +
+pdf("~/Documents/Rotation3/data/comparePlatforms/All_length_box.pdf", width = 4, height = 3)
+ggplot(tot.226,aes(x=software, y=length, fill=software)) +
+  guides(fill=FALSE) +
+  geom_boxplot() +
+  theme_bw() +
+  ylab("Length (bp)")+
+  xlab("")+
+  scale_y_continuous( breaks = c(200,500,1000,2000,5000,10000,20000,50000,100000,200000,500000,1000000), trans = 'log10') 
+graphics.off()
+
+pdf("~/Documents/Rotation3/data/comparePlatforms/All_length_dens.pdf", width = 4, height = 3)
+ggplot(tot.226, aes(x=length, fill=software))+
+  geom_density(alpha=0.80) + 
+  scale_x_continuous(limits = c( 000,10000)) + 
+  theme_bw() +
+  xlab("Length (bp)")+
+  theme(legend.position = c(0.765,0.78))
+graphics.off()
+
+### Length distribution of intersections
+
+BD.CNV <- read.table("~/Documents/Rotation3/data/intersects/unique_BD_from_BD_CNV.txt")
+BD.GS <- read.table("~/Documents/Rotation3/data/intersects/unique_BD_from_BD_GS.txt")
+CNV.GS <- read.table("~/Documents/Rotation3/data/intersects/unique_CNV_from_CNV_GS.txt")
+
+colnames(BD.CNV) <- c("chr", "start", "stop")
+colnames(BD.GS) <- c("chr", "start", "stop")
+colnames(CNV.GS) <- c("chr", "start", "stop")
+
+
+BD.CNV$sample <- "BD.CNV"
+BD.GS$sample <- "BD.GS"
+CNV.GS$sample <- "CNV.GS"
+
+all.interesected <- rbind(BD.CNV, BD.GS, CNV.GS)
+
+all.interesected$length <- all.interesected$stop - all.interesected$start
+
+pdf("~/Documents/Rotation3/data/comparePlatforms/length_dist_intersected_box.pdf", width = 8, height = 5)
+ggplot(all.interesected,aes(x=sample, y=length)) +
   geom_boxplot( fill = "cornflowerblue") +
   theme_bw() +
   ylab("Length")+
   xlab("")+
+  scale_y_continuous( breaks = c(200,500,1000,2000,5000,10000,20000,50000,100000,200000,500000,1000000), trans = 'log10') 
+graphics.off()
+
+pdf("~/Documents/Rotation3/data/comparePlatforms/length_dist_intersected_dens.pdf", width = 8, height = 5)
+ggplot(all.interesected, aes(x=length, fill=sample))+
+  geom_density(alpha=0.80) + 
+  scale_x_continuous(limits = c( 000,25000)) + 
+  theme_bw() 
+graphics.off()
+
+
+
+set.seed(45)
+chr <- rep(paste0("chr", 1:3), each=100)
+pos <- rep(1:100, 3)
+cov <- sample(0:500, 300)
+df  <- data.frame(chr, pos, cov)
+
+require(ggplot2)
+p <- ggplot(data = cov )# ,aes(x=pos, y=cov)) + geom_area(aes(fill=chr)
+p + facet_wrap(~ chr, ncol=1)
+
+
+library(IRanges)
+# 
+# start <- cnv.226$start
+# end <- cnv.226$end
+# 
+# x <- IRanges(start=start, end=end)
+# cov <- coverage(x)
+# # plot coverage
+# plot(cov, type = "l"  , xlab = "position",   ylab = "frequency of gaps", main = "Coverage ")
+
+
+## Number features
+
+BD <- read.table("~/Documents/Rotation3/data/comparePlatforms/BD_numDels.txt")
+colnames(BD) <- c("num", "sample")
+BD$sw <- "BD"
+
+BD <- read.table("~/Documents/Rotation3/data/comparePlatforms/filtDEL_BD.txt")
+colnames(BD) <- c("num", "sample")
+BD$sw <- "BDFilt"
+
+pdf("~/Documents/Rotation3/data/comparePlatforms/NumDelsBD", width = 8, height = 5)
+ggplot(BD,aes(x=sw,y=num)) +
+  geom_boxplot( fill = "cornflowerblue") +
+  theme_bw() +
+  ylab("Length")+
+  xlab("")#+
   scale_y_continuous( breaks = c(200,500,1000,2000,5000,10000,20000,50000,100000,200000,500000,1000000), trans = 'log10') 
 graphics.off()

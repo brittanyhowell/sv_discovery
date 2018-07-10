@@ -28,17 +28,7 @@ ggplot(df.226, aes(x=length, fill=chr))+
 #   theme_bw()
 # 
 
-
-library(IRanges)
-
-start <- df.some$Pos1
-end <- df.some$Pos2
-
-x <- IRanges(start=start, end=end)
-cov <- coverage(x)
-# plot coverage
-plot(cov, type = "l"  , xlab = "position",   ylab = "frequency of gaps", main = "Coverage ")
-
+Sorr
 ## Genomestrip data
 df.gs <-  read.table("../../genomestrip/gs_cnv.reduced.genotypes.txt", header = TRUE)
 colnames(df.gs) <- c("chr", "start", "end", "name", "length")

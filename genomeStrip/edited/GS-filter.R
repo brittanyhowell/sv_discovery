@@ -37,6 +37,7 @@ out.DIR <- "/Users/bh10/Documents/Rotation3/data/genomestrip/"
 sample.name.ext <- paste(file.DIR,"gs_cnv.reduced.genotypes.txt" , sep="/")
 sample.name <- "CNV"
 
+
 # Which chroms
 selectedChroms <- "autosomes"
 
@@ -119,7 +120,7 @@ fdat$DUPfreq <- rowSums(fdat[, c(6:ncol(fdat))] >= 2)
 # sv.DUPfreq <- fdat[!(fdat$DUPfreq==0),]
 
 ## Save rows eith either a homDEL or a hetDEL
-sv.DEL <- fdat[(any(fdat$hom.DELfreq!=0) | (fdat$het.DELfreq!=0)),]  
+sv.DEL <- fdat[(any(fdat$hom.DELfreq!=0) & (fdat$het.DELfreq!=0)),]  
 
 # # Add a column that is the "type" of SV
 # sv.hom.DELfreq$SVType <- "homDEL"
@@ -225,10 +226,11 @@ part.filt.dels <- edels[which(indsize &  indin ),] # & indrp & indrd
 indga <- apply(part.filt.dels[,1:3], 1, function(v) any(as.numeric(v[1])==as.numeric(gaps[,1]) & ((as.numeric(v[2])>=(as.numeric(gaps[,2])-50) & (as.numeric(v[2])+100)<=(as.numeric(gaps[,3])+50)) |  (as.numeric(v[3])>=(as.numeric(gaps[,2])-50) & (as.numeric(v[3])+100)<=(as.numeric(gaps[,3])+50))))) 
 
 # Gaps - second one
-indgb <- apply(part.filt.dels[,1:3], 1, function(v) any(as.numeric(v[1])==as.numeric(mgaps[,1]) &  ((as.numeric(v[2])>=(as.numeric(mgaps[,2])-1000) & (as.numeric(v[2])+100)<=(as.numeric(mgaps[,3])+1000)) | (as.numeric(v[3])>=(as.numeric(mgaps[,2])-1000) & (as.numeric(v[3])+100)<=(as.numeric(mgaps[,3])+1000)))))
+indgb <- apply(part.filt.dels[,1:3], 1, function(v) any(as.numeric(v[1])==as.numeric(mgaps[,1]) &  ((as.numeric(v[2])>=(as.numeric(mgaps[,2])-50) & (as.numeric(v[2])+100)<=(as.numeric(mgaps[,3])+50)) | (as.numeric(v[3])>=(as.numeric(mgaps[,2])-50) & (as.numeric(v[3])+100)<=(as.numeric(mgaps[,3])+50)))))
 
 # Centromeres
 indc <- apply(part.filt.dels[,1:3], 1, function(v) any(as.numeric(v[1])==as.numeric(centro[,1]) &  ((as.numeric(v[2])>=(as.numeric(centro[,2])-1000) & (as.numeric(v[2])+100)<=(as.numeric(centro[,3])+1000)) |  (as.numeric(v[3])>=(as.numeric(centro[,2])-1000) & (as.numeric(v[3])+100)<=(as.numeric(centro[,3])+1000)))))
+
 
  
 filt.all <- !indga & !indgb & !indc 
