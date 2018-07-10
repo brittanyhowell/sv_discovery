@@ -10,3 +10,6 @@ breakdancer/template/
 notes/.ipynb_checkpoints/
 
 
+iRods.sh
+breakdancer/merge/allocate_BD_dels_to_merged_regions.R
+breakdancer/merge/convert_filtered_merged_BD_dels_to_vcf.R
