@@ -1,6 +1,8 @@
 #!/bin/bash
 
-# bsub -J "BDArray[1-10]" -o /nfs/team151/bh10/scripts/bh10_general/output/indexBAM-%J-%I.out -e /nfs/team151/bh10/scripts/bh10_general/output/indexBAM-%J-%I.err "/nfs/team151/bh10/scripts/bh10_general/indexBAM.sh /nfs/team151/bh10/scripts/bh10_general/fileLists/10Bams.list"
+# bsub -J "index[1-10]" -o /nfs/team151/bh10/scripts/bh10_general/output/indexBAM-%J-%I.out -e /nfs/team151/bh10/scripts/bh10_general/output/indexBAM-%J-%I.err "/nfs/team151/bh10/scripts/bh10_general/indexBAM.sh /nfs/team151/bh10/scripts/bh10_general/fileLists/10Bams.list"
+
+# Job <4173612> is submitted to default queue <normal>. - 11 July
 
 fileDIR=/lustre/scratch115/projects/interval_wgs/testBams
 ext=".bam"
@@ -31,7 +33,7 @@ oFile=${oDIR}/${filename}.bam.bai
     ## Run BD
     echo "samtools index -b ${fFile} > ${oFile}"
 
-    samtools index -b ${fFile} > ${oFile}
+    /software/hgi/pkglocal/samtools-1.3.1/bin/samtools index -b ${fFile} > ${oFile}
 
 # rm ${listFiles}
 
