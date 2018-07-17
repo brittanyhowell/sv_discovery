@@ -170,74 +170,24 @@ func main() {
 			start := r.Pos
 			stop := r.Pos + r.TempLen
 
-			// Aux tags available with BWA mem 16-7-18:
-			// X0 Number of best hits
-			// X1 Number of suboptimal hits found by BWA
-			// XN Number of ambiguous bases in the referenece
-			// XM Number of mismatches in the alignment
-			// XO Number of gap opens
-			// XG Number of gap extentions
-			// XT Type: Unique/Repeat/N/Mate­sw
-			// XA Alternative hits; format: (chr,pos,CIGAR,NM;)*
-			// XS Suboptimal alignment score
-			// XF Support from forward/reverse alignment
-			// XE Number of supporting seeds
+			// Report alignment score - from the Aux fields
+			// There is no multiple mapping flag in BWA-mem,
+			// Reads with 0 MAPQ and high AS are multimapped.
+			tagAS := sam.NewTag("AS")
+			valAS := r.AuxFields.Get(tagAS)
 
-			// checkAux
+			// remove hash from read name
+			readName := strings.Replace(r.Name, "#", "_", -1) // -1 so it replaces all instances
 
-			tagXT := sam.NewTag("XT") // Type: Unique/Repeat/N/Mate­sw
-			tagX1 := sam.NewTag("X1") // number of sub optimal hits
-			tagX0 := sam.NewTag("X0") // number of best hits (in multiple mapping cases) (v. important)
-			tagXN := sam.NewTag("XN") // number of ambiguous bases in the alignment
-
-			valXT := r.AuxFields.Get(tagXT)
-			valX0 := r.AuxFields.Get(tagX0)
-			valX1 := r.AuxFields.Get(tagX1)
-			valXN := r.AuxFields.Get(tagXN)
-
-			var countVars int
-			countVars = 0
-			if valXT != nil {
-				countVars++
-			}
-			if valX0 != nil {
-				countVars++
-			}
-			if valX1 != nil {
-				countVars++
-			}
-			if valXN != nil {
-				countVars++
-			}
-
-			// OKAY SO
-			// Now that countVars equals the number of nil values (that aren't NIL) we can adjust the file output.
-			// Either, print dashes. Dots. SOMETHING. OR print the value. Don't make it zero, zero carries meaning.
-			// an idea is NIL.
-			// we're talkin':if countVars == 4, print lomg, if not, print nils
-			if countVars == 0 { // case where there are no interesting flags
-				fmt.Fprintf(out, "%v\t%v\t%v\t%v\t%v\tnil\tnil\tnil\tnil\t%v\n",
-					sv.Chr,  // Chromosome - yes it is of the SV not the read but if it maps it has to match so it should be fine.
-					start,   // start mapping
-					stop,    // stop mapping
-					r.Cigar, // cigar string
-					r.MapQ,  // read quality
-					r.AuxFields,
-				)
-			} else {
-				fmt.Fprintf(out, "%v\t%v\t%v\t%v\t%v\t%v\t%v\t%v\t%v\t%v\n",
-					sv.Chr,  // Chromosome - yes it is of the SV not the read but if it maps it has to match so it should be fine.
-					start,   // start mapping
-					stop,    // stop mapping
-					r.Cigar, // cigar string
-					r.MapQ,  // read quality
-					valX0,
-					valX1,
-					valXN,
-					valXT,
-					r.AuxFields,
-				)
-			}
+			fmt.Fprintf(out, "%v\t%v\t%v\t%v\t%v\t%v\t%v\n",
+				readName, // to ID
+				sv.Chr,   // Chromosome - yes it is of the SV not the read but if it maps it has to match so it should be fine.
+				start,    // start mapping
+				stop,     // stop mapping
+				r.Cigar,  // cigar string
+				r.MapQ,   // read quality
+				valAS,    // Alignment score
+			)
 
 		}
 		fmt.Printf("There were %v reads in the interval %v\n", howManyReads, sv.Name)
