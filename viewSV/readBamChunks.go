@@ -165,10 +165,17 @@ func main() {
 		// iterate over reads - print to file
 		for i.Next() {
 			howManyReads++
-			// print each read to a file, get the coordinates and print, yeah
+
 			r := i.Record()
+
+			// There is an issue with this.
+			// r.Pos is the first mapped base.
+			// I want to plot not just the mapped bases, but the whole cigar string.
+			// I would like to add a switch statement here.
+			// If the first argument is a non mapper, then the raw start should be r.Pos - this.
+			// However most of my reads are 151M right now, so I am going to deal with those, and come back.
 			start := r.Pos
-			stop := r.Pos + r.TempLen
+			end := start + r.Seq.Length
 
 			// Report alignment score - from the Aux fields
 			// There is no multiple mapping flag in BWA-mem,
@@ -182,8 +189,8 @@ func main() {
 			fmt.Fprintf(out, "%v\t%v\t%v\t%v\t%v\t%v\t%v\n",
 				readName, // to ID
 				sv.Chr,   // Chromosome - yes it is of the SV not the read but if it maps it has to match so it should be fine.
-				start,    // start mapping
-				stop,     // stop mapping
+				start,    // first mapped base
+				end,      // last mapped base
 				r.Cigar,  // cigar string
 				r.MapQ,   // read quality
 				valAS,    // Alignment score
