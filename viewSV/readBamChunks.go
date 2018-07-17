@@ -105,7 +105,6 @@ func main() {
 		}
 		i++
 	}
-	fmt.Println(intAll)
 	if err := sInt.Err(); err != nil {
 		log.Fatal(err)
 	}
@@ -216,19 +215,29 @@ func main() {
 			// Either, print dashes. Dots. SOMETHING. OR print the value. Don't make it zero, zero carries meaning.
 			// an idea is NIL.
 			// we're talkin':if countVars == 4, print lomg, if not, print nils
-			fmt.Fprintf(out, "%v\t%v\t%v\t%v\t%v\n\n%v\n\nvalues:%v\tX1:%v\tXT:%v\tXN:%v\n",
-				sv.Chr,  // Chromosome - yes it is of the SV not the read but if it maps it has to match so it should be fine.
-				start,   // start mapping
-				stop,    // stop mapping
-				r.Cigar, // cigar string
-				r.MapQ,  // read quality
-				r.AuxFields,
-				countVars,
-				countVars,
-				countVars,
-				countVars,
-				// len(r.AuxFields.Get(tagXN)),
-			)
+			if countVars == 0 { // case where there are no interesting flags
+				fmt.Fprintf(out, "%v\t%v\t%v\t%v\t%v\tnil\tnil\tnil\tnil\t%v\n",
+					sv.Chr,  // Chromosome - yes it is of the SV not the read but if it maps it has to match so it should be fine.
+					start,   // start mapping
+					stop,    // stop mapping
+					r.Cigar, // cigar string
+					r.MapQ,  // read quality
+					r.AuxFields,
+				)
+			} else {
+				fmt.Fprintf(out, "%v\t%v\t%v\t%v\t%v\t%v\t%v\t%v\t%v\t%v\n",
+					sv.Chr,  // Chromosome - yes it is of the SV not the read but if it maps it has to match so it should be fine.
+					start,   // start mapping
+					stop,    // stop mapping
+					r.Cigar, // cigar string
+					r.MapQ,  // read quality
+					valX0,
+					valX1,
+					valXN,
+					valXT,
+					r.AuxFields,
+				)
+			}
 
 		}
 		fmt.Printf("There were %v reads in the interval %v\n", howManyReads, sv.Name)
