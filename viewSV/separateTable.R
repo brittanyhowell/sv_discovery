@@ -5,6 +5,7 @@
 # wk and out DIRs
 
 
+
 # Interprets zygosity based on depth. 
 # 0 = no reads hence deletion etc. 
   CNVConvert <- function(x) {
@@ -60,6 +61,15 @@ inputType <- "CNV" # Options include CNV right now. #
   sample.bind <- cbind(sample.bind, converted)
   converted <- NULL
 
+  # Replace 1 with chr1
+  chr.convert <-  as.data.frame(sapply(sample.bind$chr,function(x) paste("chr",x,sep = "")))
+  colnames(chr.convert) <- "chr"
+  sample.nochr <- sample.bind[,-1]
+  sample.bind <- cbind(chr.convert,sample.nochr)
+  sample.nochr <- NULL
 
+  chr.convert <- NULL
+  
 # Save to file
 write.table(sample.bind, outTable.file, quote=F, row.names=F,  sep="\t")
+
